@@ -1,0 +1,151 @@
+<?php
+
+/*
+
+$img = new SimpleImage();
+$img->load('picture.jpg'); 
+$image->resize(250,400); 
+$image->save('picture2.jpg');
+
+
+$image = new SimpleImage(); 
+$image->load('picture.jpg'); 
+$image->resizeToWidth(250); 
+$image->save('picture2.jpg');
+
+
+$image = new SimpleImage(); 
+$image->load('picture.jpg'); 
+$image->scale(50);
+$image->save('picture2.jpg');
+
+
+header('Content-Type: image/jpeg');
+$image = new SimpleImage(); 
+$image->load('picture.jpg'); 
+$image->resizeToWidth(150); 
+$image->output();
+
+*/   
+	 class SimpleImage 
+	 {
+
+	 	private $image; 
+	 	private $imageType;
+
+	 	function load( $filename ) 
+	 	{   
+	 		$imageInfo = getimagesize( $filename );//Obtiene la informacion sobre la imagen
+	 		$this->imageType = $imageInfo[ 2 ];//Obtiene el tipo de imagen
+
+	 		if( $this->imageType == IMAGETYPE_JPEG ) {
+
+	 			$this->image = imagecreatefromjpeg( $filename ); 
+
+	 		} else {
+
+	 			if( $this->imageType == IMAGETYPE_GIF ) {
+
+	 			$this->image = imagecreatefromgif( $filename );
+	 		
+	 			} else {
+
+	 				if( $this->imageType == IMAGETYPE_PNG ) {  
+	 				$this->image = imagecreatefrompng( $filename );
+
+	 				}//end if interno
+	 			}//end if...else interno
+	 		}//end if...else externo
+
+	 	}//end load
+
+
+
+
+	 	public function save( $filename, $imageType = IMAGETYPE_JPEG, $compression = 75, $permissions = null) 
+	 	{
+	 	   if( $this->imageType == IMAGETYPE_JPEG )
+	 	   		imagejpeg( $this->image, $filename, $compression );
+
+	 	   elseif( $this->imageType == IMAGETYPE_GIF )
+	 	   		imagegif( $this->image, $filename);
+
+	 	   elseif( $this->imageType == IMAGETYPE_PNG )
+	 	   		imagepng( $this->image, $filename);
+
+	 	   if( $permissions != null )
+	 	   		chmod( $filename, $permissions );
+	 	}//end save
+
+
+
+
+	 	public function output() {
+
+	 		if( $this->imageType == IMAGETYPE_JPEG )
+	 			imagejpeg( $this->image ); 
+
+	 		elseif( $this->imageType == IMAGETYPE_GIF )
+	 			imagegif($this->image);
+
+	 		elseif( $this->imageType == IMAGETYPE_PNG )
+	 			imagepng($this->image);
+
+	 	}//end output
+
+
+
+
+	 	public function getWidth() {   
+	 		return imagesx( $this->image ); 
+	 	}//end getWidth
+
+
+
+	 	public function getHeight() {   
+	 		return imagesy( $this->image ); 
+	 	}//end getHeight
+
+
+
+	 	public function resizeToHeight( $height ) { 
+	 		$ratio = $height / $this->getHeight(); 
+	 		$width = $this->getWidth() * $ratio; 
+	 		$this->resize( $width, $height ); 
+
+	 	}//end resizeToHeight
+
+
+
+	 	public function resizeToWidth( $width ) { 
+	 		$ratio = $width / $this->getWidth(); 
+	 		$height = $this->getheight() * $ratio; 
+	 		$this->resize( $width, $height );
+
+	 	}//end resizeToWidth 
+
+
+
+	 	public function scale( $scale )	{
+	 		$width = $this->getWidth() * $scale/100; 
+	 		$height = $this->getheight() * $scale/100; 
+	 		$this->resize($width,$height);
+
+	 	}//end scale 
+
+
+
+	 	public function resize( $width, $height ) { 
+	 		$newImage = imagecreatetruecolor( $width, $height);
+
+	 		imagecopyresampled( $newImage, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+
+	 		$this->image = $newImage;
+
+	 	}//end resize
+
+	 }//end SimpleImage 
+
+//See more at: http://www.white-hat-web-design.co.uk/blog/resizing-images-with-php/
+
+?>

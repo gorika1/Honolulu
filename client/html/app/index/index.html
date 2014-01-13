@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		{HEAD}
+	</head>
+
+	<body>
+		{BAR}
+		<div id="container" class="container">
+			<div class="row">
+				<div class="col-md-7 col-md-offset-2">
+					<h3 class="text-center"><b>Menú</b></h3>
+				</div>
+			</div>
+
+			<div class="row">
+				
+				{CATEGORIAS}
+
+				<div class="col-md-7">
+					<div id="navigation">					
+						<div class="food-container">
+							<img src="http://placehold.it/120x120" class="food-img" />
+							<div class="food-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, rerum, nam aut quae voluptatibus recusandae corporis ad fuga consequuntur eius explicabo ab eligendi commodi obcaecati alias iste blanditiis dignissimos.</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="col-md-3" id="resumen-container">
+					<div id="resumen">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<script lsrc="client/js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js">
+		</script>
+		<script type="text/javascript">
+			(function($){
+				$(window).load(function(){
+					$("#navigation").mCustomScrollbar({
+						theme: 'dark',
+						scrollButtons: {
+							enable: true				
+						},
+					});
+				});
+			})(jQuery);
+		</script>
+	</body>
+</html>

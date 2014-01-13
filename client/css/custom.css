@@ -1,0 +1,123 @@
+body {
+	background: #e2e2e2;
+	padding-bottom: 0;
+}
+
+#container {
+	padding: 0;
+	width: 97%;
+}
+
+/************************************************
+*******************  NAVBAR  ********************
+*************************************************/
+div.navbar-inverse {
+	background: #3f3f3f;
+}
+
+#logo {
+	display: inline;
+	height: 60px;
+}
+
+.navbar-brand {
+	display: inline;
+	float: none;
+	padding-left: 3px;
+}
+
+/************************************************
+*******************  OPTIONS ********************
+*************************************************/
+
+#options {
+	margin-left: 0;
+}
+
+
+div.bg-rect {
+	background: #212121;
+	margin: .3em;
+	height: 150px;
+	max-width: 150px;
+	padding: 10px;
+	text-align: center;
+}
+
+div.bg-rect > div {
+	background: #d25d37;
+	border-radius: 50%;
+	height: 110px;
+	margin: auto;
+	padding: 10px;
+	width: 110px;
+}
+
+div.bg-rect > div.active {
+	box-shadow: 0 0 20px #888;
+}
+
+#options div img {
+	display: block;
+	width: 80px;
+	height: 80px;
+	margin: auto;
+}
+
+.option-name {
+	color: #CCC;
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin-top: .3em;
+}
+
+/************************************************
+****************** NAVIGATION *******************
+*************************************************/
+#navigation { 
+	color: #212121; 
+	height: 650px; 
+	padding:20px; 
+	overflow:auto;
+}
+
+.food-container {
+	border-top: 1px solid #212121;
+	border-bottom: 1px solid #212121;
+	border-left: 3px solid #212121;
+	border-right: 3px solid #212121;
+	border-radius: .5em;
+	margin: 1.5em 0;
+	padding: .4em .7em;
+}
+
+.food-container:first {
+	margin-top: 0;
+}
+
+.food-img, .food-description {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.food-description {
+	padding-left: 1em;
+	width: 73%;
+}
+
+/************************************************
+******************* RESUMEN  ********************
+*************************************************/
+#resumen-container {
+	padding-left: 0;
+}
+
+#resumen {
+	border: 1px solid #212121;
+	border-top: 4px solid #000;
+	border-bottom: 4px solid #000;
+	border-radius: 1em;
+	height: 400px;
+	width: 100%;
+}
