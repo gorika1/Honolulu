@@ -18,6 +18,7 @@
 				$this->server = $server . '/server/';
 			else
 				$this->server = 'http://localhost/server/';
+
 		}//end __construct
 
 
@@ -56,11 +57,11 @@
 			global $drawer;
 			$this->drawer = clone( $drawer );
 			
-			//Si se ha pasado de lista que reemplazar
+			//Si se ha pasado la lista que reemplazar
 			if( isset( $replaced ) )
 			{
-				foreach ( $replaced as $function ) 
-					call_user_func( array( $this->className . 'Drawing', 'draw' . $function ) );
+				foreach ( $replaced as $function )
+					eval( '$this->draw' . $function . ';' );
 			}//end if
 
 			//Si se pasaron elementos extras que traducir

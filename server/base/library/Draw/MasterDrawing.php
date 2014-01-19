@@ -10,7 +10,7 @@
 
 		public function __construct()
 		{
-			//Clona los datos de{USER BAR} login si existe
+			//Clona los datos de login si existe
 			global $login;
 			if( isset( $login ) )
 				$this->login = $login;

@@ -8,8 +8,7 @@
 		static $host = 'localhost';
 		static $user = 'root';
 		static $password = '';
-		static $db = 'cp-db';
-		static $server = 'http://localhost/CP_Bootstrap/';
+		static $db = 'honolulu-db';
 			
 		static function startConnection()
 		{
