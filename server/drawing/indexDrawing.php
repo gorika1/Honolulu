@@ -2,7 +2,6 @@
 
 	class IndexDrawing extends Drawing {
 
-		private $menus;
 		private $myListar;
 
 		public function __construct()
@@ -12,23 +11,15 @@
 		}
 		
 		public function drawLista( $idTipoMenu, $isAJAX = false )
-		{
-
-			$this->menus = $this->myListar->getLista( $idTipoMenu );
+		{			
+			$lista = $this->myListar->getLista( $idTipoMenu );
 			$this->setList( 'menu' );
 
-			//Por cada curso
-			foreach( $this->menus as $menu ) {
-
-				//Se almacena los siguientes elementos en list[]
-				$this->list[] = array(
-						'idMenu' => $menu[ 'idMenu' ],
-						'Nombre' => $menu[ 'nombreMenu' ],
-						'Ingredientes' => $menu[ 'stringIngredientes' ],
-						'Precio' => $menu[ 'precio' ]
-					);
-				
-			}//end foreach
+			if( $idTipoMenu == 6 ) {
+				$this->pizzasList( $lista );
+			} else {
+				$this->menusList( $lista );
+			}	
 
 			//Si no es una peticion AJAX
 			if( !$isAJAX )
@@ -41,6 +32,39 @@
 				$list[ 'DOM' ] = $this->template;
 				return $list;
 			}
+		}
+
+		public function menusList( $lista ) {
+			//Por cada menu
+			foreach( $lista as $menu ) {
+
+				//Se almacena los siguientes elementos en list[]
+				$this->list[] = array(
+						'idMenu' => $menu[ 'idMenu' ],
+						'Nombre' => $menu[ 'nombreMenu' ],
+						'Ingredientes' => $menu[ 'stringIngredientes' ],
+						'Precio' => $menu[ 'precio' ]
+					);
+				
+			}//end foreach
+		}//menusList
+
+
+		//***************************************************************
+
+		public function pizzasList( $lista ) {
+			//Por cada pizza
+			foreach( $lista as $pizza ) {
+
+				//Se almacena los siguientes elementos en list[]
+				$this->list[] = array(
+						'idMenu' => $pizza[ 'idPizza' ],
+						'Nombre' => $pizza[ 'nombrePizza' ],
+						'Precio' => $pizza[ 'precio' ],
+						'Ingredientes' => $pizza[ 'stringIngredientes' ],					
+					);
+				
+			}//end foreach
 		}
 
 	}//end CursosView
