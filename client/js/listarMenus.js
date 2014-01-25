@@ -1,5 +1,3 @@
-total = 0; //almacena el monto total del pedido
-
 $(document).on( 'ready', function(){
 	//Llama a scrollBar en la primera carga de la pagina
 	scrollFoods();
@@ -10,7 +8,6 @@ $(document).on( 'ready', function(){
 		$( '.active' ).removeClass('active');//borra la clase active del elemento anterior
 		$(':first-child', this ).addClass( 'active' );//asigna la clase al elemento actual
 		getLista( id );//llama a la funcion getLista y pasa el id del tipo del menu
-
 	});
 
 	//Toma a navigation como referencia ya que el resto es creado automaticamente
@@ -82,43 +79,8 @@ function updateLista( data )
 //**********************************************************************************
 
 
-function addCart( element, idMenu )
-{
-	precio = $(element).siblings();//obtiene al hermano del elemento en cuestio (es decir el precio)
-	precio = $( precio ).text().replace( 'Precio: ', '' );//extrae solamente el monto
-
-	food = $(element).attr('food');//Obtiene el nombre del menu
-
-	total = total + parseInt( precio );
-
-	$('#resumen').append(
-		'<span class="food-order" id=' + idMenu + '>' + food + '</span>' +
-		'<span class="food-order-price">' + precio + '</span>'
-	);
-
-	$('#monto-total').html(
-		'<span>Total: </span>' +
-		'<span id="monto">' + total + '</span>'
-	);
-
-	scrollResumen();
-}
-
-
-//***********************************************************************************
-
 function scrollFoods(){			
 	$("#navigation").mCustomScrollbar({
-		theme: 'dark',
-		scrollButtons: {
-			enable: true				
-		},			
-	});
-}
-
-function scrollResumen(){
-	$('#resumen').mCustomScrollbar("destroy");	
-	$("#resumen").mCustomScrollbar({
 		theme: 'dark',
 		scrollButtons: {
 			enable: true				

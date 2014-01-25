@@ -2,8 +2,6 @@
 <html lang="es">
 	<head>
 		{HEAD}
-		<script lsrc="client/js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-		<script type="text/javascript" src="client/js/ajax.js"></script>	
 	</head>
 
 	<body>
@@ -14,19 +12,19 @@
 					<h3 id="title" class="text-center"><b>Menú</b></h3>
 					<div id="myModal" class="reveal-modal">
 					     <h1>Elija la mesa</h1>
-					     <button type="button" id="Mesa-1" class="close-reveal-modal exception btn btn-default btn-block">Mesa 1</button>
-					     <button type="button" id="Mesa-2" class="close-reveal-modal exception btn btn-default btn-block">Mesa 2</button>
-					     <button type="button" id="Mesa-3" class="close-reveal-modal exception btn btn-default btn-block">Mesa 3</button>
-					     <button type="button" id="Mesa-4" class="close-reveal-modal exception btn btn-default btn-block">Mesa 4</button>
-					     <button type="button" id="Mesa-5" class="close-reveal-modal exception btn btn-default btn-block">Mesa 5</button>
-					     <button type="button" id="Mesa-6" class="close-reveal-modal exception btn btn-default btn-block">Mesa 6</button>
-					     <button type="button" id="Mesa-7" class="close-reveal-modal exception btn btn-default btn-block">Mesa 7</button>
-					     <button type="button" id="Mesa-8" class="close-reveal-modal exception btn btn-default btn-block">Mesa 8</button>
-					     <button type="button" id="Mesa-9" class="close-reveal-modal exception btn btn-default btn-block">Mesa 9</button>
-					     <button type="button" id="Mesa-10" class="close-reveal-modal exception btn btn-default btn-block">Mesa 10</button>
-					     <button type="button" id="Mesa-11" class="close-reveal-modal exception btn btn-default btn-block">Mesa 11</button>
-					     <button type="button" id="Mesa-12" class="close-reveal-modal exception btn btn-default btn-block">Mesa 12</button>
-					     <button type="button" class="close close-reveal-modal" aria-hidden="true">&times;</button>
+					     <button type="button" id="Mesa-1" class="close-reveal-modal exception btn btn-default">Mesa 1</button>
+					     <button type="button" id="Mesa-2" class="close-reveal-modal exception btn btn-default">Mesa 2</button>
+					     <button type="button" id="Mesa-3" class="close-reveal-modal exception btn btn-default">Mesa 3</button>
+					     <button type="button" id="Mesa-4" class="close-reveal-modal exception btn btn-default">Mesa 4</button>
+					     <button type="button" id="Mesa-5" class="close-reveal-modal exception btn btn-default">Mesa 5</button>
+					     <button type="button" id="Mesa-6" class="close-reveal-modal exception btn btn-default">Mesa 6</button>
+					     <button type="button" id="Mesa-7" class="close-reveal-modal exception btn btn-default">Mesa 7</button>
+					     <button type="button" id="Mesa-8" class="close-reveal-modal exception btn btn-default">Mesa 8</button>
+					     <button type="button" id="Mesa-9" class="close-reveal-modal exception btn btn-default">Mesa 9</button>
+					     <button type="button" id="Mesa-10" class="close-reveal-modal exception btn btn-default">Mesa 10</button>
+					     <button type="button" id="Mesa-11" class="close-reveal-modal exception btn btn-default">Mesa 11</button>
+					     <button type="button" id="Mesa-12" class="close-reveal-modal exception btn btn-default">Mesa 12</button>
+					     <span class="glyphicon glyphicon glyphicon glyphicon glyphicon-remove close close-reveal-modal"></span>
 					</div>
 				</div>
 			</div>
@@ -45,9 +43,7 @@
 					<div class="panel panel-primary" id="resumen-container" >
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								<button id="popup" class="btn btn-success btn-md dropdown-toggle" type="button" data-toggle="dropdown">
-									Mesa 1
-								</button>
+								<button id="popup" class="btn btn-success btn-md dropdown-toggle" type="button" data-toggle="dropdown">Mesa 1</button>
 							</h3>
 						</div>
 					  	<div class="panel-body">
@@ -63,23 +59,8 @@
 			</div>
 		</div>
 		
-		<script type="text/javascript">
-			$('#popup').on( 'click', function(){
-				$('#myModal').reveal({
-				     animation: 'fade',                   //fade, fadeAndPop, none
-				     animationspeed: 300,                       //how fast animtions are
-				     closeonbackgroundclick: true,              //if you click background will modal close?
-				     dismissmodalclass: 'close-reveal-modal'    //the class of a button or element that will close an open modal
-				});
-			});
-
-			$('.exception').on('click', function() {
-				mesa = $(this).attr('id');
-				mesa = mesa.replace( '-', ' ' );
-				$('#popup').text(mesa);
-			})
-			
-		</script>
-		
+		<script lsrc="client/js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script type="text/javascript" lsrc="client/js/resumenDriver.js"></script>	
+		<script type="text/javascript" lsrc="client/js/listarMenus.js"></script>	
 	</body>
 </html>

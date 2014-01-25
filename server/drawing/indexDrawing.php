@@ -13,8 +13,8 @@
 		
 		public function drawLista( $idTipoMenu, $isAJAX = false )
 		{
-			$this->menus = $this->myListar->getListaMenu( $idTipoMenu );
 
+			$this->menus = $this->myListar->getLista( $idTipoMenu );
 			$this->setList( 'menu' );
 
 			//Por cada curso

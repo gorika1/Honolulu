@@ -1,23 +1,42 @@
 <?php
 
+	//Agregar la propiedad precio a la tabla Bebidas en la base de datos y luego obtener
+	//ese dato tambien
+
 	class Listar
 	{
-		public function getListaMenu( $idTipoMenu )
+		private $lista;//almacena los elementos de las categorias (pizzas, menus y bebidas)
+
+		public function getLista( $id )
 		{
-			$lista;//almacena los elementos de las categorias (pizzas, menus y bebidas)
-			$lista = Work::getRegisters( 'Menus', 'idMenu, nombreMenu, precio', 
+			//Si la peticion quiere las pizzas
+			if( $id == 6 ) {
+				$this->lista = Work::getRegisters( 'Pizzas', 'idPizza, nombreMenu, precio' );
+			} else if( $id == 7 ) { //Si la peticion quiere las bebidas
+				$this->lista = Work::getRegisters( 'Bebidas', 'idBebida, nombreBebida' );
+			} else {
+				$this->getListaMenu( $id );
+			}//end if else interno
+
+			return $this->lista;
+		}//end getLista
+
+		public function getListaMenu( $idTipoMenu )
+		{			
+			$this->lista = Work::getRegisters( 'Menus', 'idMenu, nombreMenu, precio', 
 				sprintf( 'TiposMenus_idTipoMenu=%s', 
 						$idTipoMenu
 					) );
 
-			for( $i = 0; $i < sizeof( $lista ); $i++ )
+			for( $i = 0; $i < sizeof( $this->lista ); $i++ )
 			{				
-				$lista[$i][ 'ingredientes' ] = $this->getIngredientes( $lista[$i][ 'idMenu'] );//almacena los ingredientes en un array
-				$lista[$i][ 'stringIngredientes' ] = $this->getIngredientesAsString( $lista[$i][ 'ingredientes' ] );//almacena los ingredientes en string
-			}
-			
-			return $lista;
-		}//end getSalads
+				$this->lista[$i][ 'ingredientes' ] = $this->getIngredientes( $this->lista[$i][ 'idMenu'] );//almacena los ingredientes en un array
+				$this->lista[$i][ 'stringIngredientes' ] = $this->getIngredientesAsString( $this->lista[$i][ 'ingredientes' ] );//almacena los ingredientes en string
+			}//end for
+			return $this->lista;
+		}//end getListaMenu
+
+		public function getListaPizzas(){}
 
 
 		public function getIngredientes( $idMenu )
@@ -49,4 +68,64 @@
 
 			return $string;
 		}//end getIngredientesAsString
+
+
+		//Guarda el pedido cuando la mesa se haya cambiado
+		public function setPedido( &$datos = array() )
+		{
+			if( isset( $datos[ 'before' ] ) && isset( $datos[ 'data' ] ) )
+			{
+				//$datos['before'] almacena la mesa que se cambio
+				//$datos['current'] almacena la mesa seleccionada
+
+				//Decodifica los idMenus
+				$idMenus = json_decode( urldecode( $datos['data'] ) );
+
+				$monto = 0;//monto de la compra
+
+				foreach ( $idMenus as $id ) {
+					if( Work::existRegister( 'PedidosMenus', 'Pedidos_nroMesa = ' . $datos[ 'before' ] . ' AND Menus_idMenu = ' . $id ) )
+						Work::updateRegister( 'PedidosMenus', 'Menus_idMenu = ' . $id, 'Pedidos_nroMesa = ' . $datos[ 'before' ] );
+					else
+						Work::setRegister( 'PedidosMenus', 'Pedidos_nroMesa, Menus_idMenu', $datos[ 'before' ] . ', ' . $id );
+
+					$precio = Work::getRegister( 'Menus', 'precio', 'idMenu = '. $id );
+					$precio = $precio[ 'precio' ];
+					$monto = $monto + $precio;
+				}//end foreach
+
+				//Si se efectuo algun pedido
+				if( $monto > 0 ) {
+					if( Work::existRegister( "Pedidos", "nroMesa = " . $datos[ 'before' ] ) ) 
+						Work::updateRegister( "Pedidos", "monto = " . $monto, "nroMesa = " . $datos[ 'before' ] );
+					else
+						Work::setRegister( 'Pedidos', 'nroMesa, monto', $datos[ 'before' ] .', '. $monto );
+				}//end if interno
+
+			}//end if externo
+			if( isset( $datos[ 'current' ] ) )
+			{
+				//Obtiene los pedidos ya hechos por la mesa elegida
+				$pedido = $this->getCartSelect( $datos['current'] );
+				return $pedido;
+			}
+		}//end setPedido
+		
+		
+		//Obtiene los pedidos actuales de la mesa elegida
+		public function getCartSelect( &$mesaElegida ) 
+		{
+			//Obtiene los pedidos, el precio y la cantidad
+			$datos['pedidos'] = Work::execQuery(
+				"SELECT m.nombreMenu, m.precio, m.idMenu
+				FROM Menus as m
+				INNER JOIN PedidosMenus as pm
+				ON m.idMenu = pm.Menus_idMenu
+				AND pm.Pedidos_nroMesa = $mesaElegida", true );
+
+			//Obtiene el monto total del pedido
+			$datos[ 'monto' ] = Work::getRegister( 'Pedidos', 'monto', 'nroMesa = ' . $mesaElegida );
+			$datos[ 'monto' ] = $datos[ 'monto' ][ 'monto' ];
+			return $datos;
+		}//end getCartSelect
 	}//end Listar

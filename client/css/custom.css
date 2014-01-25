@@ -231,13 +231,27 @@ div.bg-rect > div.active {
 	background: #fff !important;
 	color: #333 !important;
 	cursor: pointer !important;
+	display: inline-block;
 	font-size: 14px !important;
 	font-weight: normal !important;
+	height: 60px;
 	line-height: 1.428571429 !important;
 	position: static !important;
+	width: 48%;
 }
 
 .reveal-modal {
 	padding: 5px 15px 5px;
 	top: 2px;
+}
+
+.close {
+	opacity: .5;
+}
+
+.reveal-modal .close-reveal-modal {
+	top: 10px;
+	right: 20px;
+	color: #000;
+	font-size: 28px;
 }

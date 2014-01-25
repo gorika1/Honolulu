@@ -327,8 +327,23 @@ a.id_articulo = 1
 			
 		}//end getCountRegisters
 
+//*******************************************************************************
 
-//*******************************************************
+
+		static function existRegister( $from, $where )
+		{
+			self::checkMysqli();
+			self::$query = "SELECT * FROM ". $from . " WHERE ". $where;
+
+			$result = self::$mysqli->query( self::$query );
+
+			if( $result->num_rows > 0 )
+				return true;
+			else
+				return false;
+		}
+
+//*******************************************************************************
 	
 		static function getPaginacion( $inicio, $categoria ) 
 		{

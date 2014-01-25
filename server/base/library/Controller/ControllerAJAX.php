@@ -5,7 +5,8 @@
 	{
 		private $method; //metodo que actualizara los datos pedidos
 
-		public function evaluate( $requestType )
+		//Evalua si existe el minimo requisito de parametros para realizar un update de datos
+		public function evaluateUpdate( $requestType )
 		{
 			if( $requestType == 'GET' )
 			{
@@ -27,7 +28,39 @@
 
 			return false;
 			
-		}//end evaluate
+		}//end evaluateUpdate
+
+
+		//**************************************************************************************************
+
+
+
+		//Evalua si existe el minimo requisito de parametros para realizar un add de datos
+		public function evaluateAdd( $requestType )
+		{
+			if( $requestType == 'GET' )
+			{
+				if( ( isset( $_GET[ 'ajax' ] ) && $_GET[ 'ajax' ] == true ) && ( isset( $_GET[ 'add' ] ) && $_GET[ 'add'] == true ) ) 
+				{
+					return true;
+				}
+
+			}
+			else if( $requestType == 'POST')
+			{
+				if( ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] == true ) && ( isset( $_GET[ 'add' ] ) && $_GET[ 'add'] == true ) ) 
+				{
+					return true;
+				}//end if mas interno
+			}///end if interno
+
+			return false;
+			
+		}//end evaluateUpdate
+
+
+
+		//**************************************************************************************************
 
 
 		//Recibe un arreglo en donde se pasan los argumentos de la funcion que retorna los datos actualizados
@@ -42,7 +75,6 @@
 			if( isset( $values ) )
 			{
 				$argumentos = '';
-
 				//Itera a traves de values para generar el string para pasar los parametros
 				for( $i = 0; $i < sizeof( $values ); $i++ )
 				{
@@ -51,7 +83,6 @@
 					else
 						$argumentos = $argumentos . $values[ $i ];
 				}
-				
 				eval( "\$returns = \$objDrawing->draw". $this->method . "( $argumentos );" );
 			}
 			else
@@ -59,6 +90,6 @@
 
 			
 			echo json_encode( $returns );
-		}
+		}//end callDraw
 
 	}//end ControllerAJAX

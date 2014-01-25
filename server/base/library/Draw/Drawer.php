@@ -25,18 +25,20 @@
 				$this->constControlledDrawing = $this->processWithController( $this->checked );//obtiene el array de objetos devueltos por processWithController
 			}//end if
 
+			$uri = 'client/html/master/';
+
 			//Si se pasaron zonas constantes extrax
 			if( isset( $masterPage[ 'Extras' ] ) )
 			{
 				//se itera por los datos pasados y se guarda entre el drawing constante
 				foreach ( $masterPage[ 'Extras' ] as $key => $value ) 
 				{
-					$template = file_get_contents( $this->server.'client/html/master/'.$value.'.html' );
+					$template = file_get_contents( $uri . $value .'.html' );
 					$this->setDrawConst( $template, $key );
 				}//end foreach
 			}//end if
 
-			$uri = 'client/html/master/';
+			
 
 			$this->headTemplate = file_get_contents( $uri . $masterPage[ 'HEAD' ] . '.html' );
 			$this->headerTemplate = file_get_contents( $uri . $masterPage[ 'HEADER' ] . '.html' );
