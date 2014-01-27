@@ -45,7 +45,8 @@
 						'idMenu' => $menu[ 'idMenu' ],
 						'Nombre' => $menu[ 'nombreMenu' ],
 						'Ingredientes' => $menu[ 'stringIngredientes' ],
-						'Precio' => $menu[ 'precio' ]
+						'Precio' => $menu[ 'precio' ],
+						'Type' => 1,
 					);
 				
 			}//end foreach
@@ -63,7 +64,8 @@
 						'idMenu' => $pizza[ 'idPizza' ],
 						'Nombre' => $pizza[ 'nombrePizza' ],
 						'Precio' => $pizza[ 'precio' ],
-						'Ingredientes' => $pizza[ 'stringIngredientes' ],					
+						'Ingredientes' => $pizza[ 'stringIngredientes' ],
+						'Type' => 2					
 					);
 				
 			}//end foreach

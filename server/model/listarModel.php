@@ -6,6 +6,7 @@
 	class Listar
 	{
 		private $lista;//almacena los elementos de las categorias (pizzas, menus y bebidas)
+		
 
 		public function getLista( $id )
 		{
@@ -53,7 +54,7 @@
 
 		//*************************************************************************************************
 
-		public function getIngredientes( $idMenu, $tipo )
+		public function getIngredientes( $id, $tipo )
 		{
 			//Si se quiere los ingredientes de un Menu
 			if( $tipo == 1 ) {
@@ -62,7 +63,7 @@
 					FROM IngredientesMenus as im
 					INNER JOIN Menus as m
 					ON im.Menus_idMenu = m.idMenu 
-					AND m.idMenu = $idMenu
+					AND m.idMenu = $id
 					INNER JOIN Ingredientes as i
 					ON im.Ingredientes_idIngrediente = i.idIngrediente ", true );
 
@@ -72,6 +73,7 @@
 					FROM IngredientesPizzas as ip
 					INNER JOIN Pizzas as p
 					ON ip.Pizzas_idPizza = p.idPizza
+					AND p.idPizza = $id
 					INNER JOIN Ingredientes as i
 					ON ip.Ingredientes_idIngrediente = i.idIngrediente ", true );
 			}
@@ -98,57 +100,8 @@
 		}//end getIngredientesAsString
 
 
-		//Guarda el pedido cuando la mesa se haya cambiado
-		public function setPedido( &$datos = array() )
-		{
-			if( isset( $datos[ 'mesa' ] ) && isset( $datos[ 'data' ] ) )
-			{
-				//$datos['before'] almacena la mesa que se cambio
-				//$datos['current'] almacena la mesa seleccionada
-				
-				//Decodifica los idMenus
-				$idMenus = json_decode( urldecode( $datos['data'] ) );
 
-				$monto = 0;//monto de la compra
-				foreach ( $idMenus as $id ) {
-					echo 'hola';
-					if( Work::existRegister( 'PedidosMenus', 'Pedidos_nroMesa = ' . $datos[ 'mesa' ] . ' AND Menus_idMenu = ' . $id ) )
-						Work::updateRegister( 'PedidosMenus', 'Menus_idMenu = ' . $id, 'Pedidos_nroMesa = ' . $datos[ 'mesa' ] );
-					else
-						Work::setRegister( 'PedidosMenus', 'Pedidos_nroMesa, Menus_idMenu', $datos[ 'mesa' ] . ', ' . $id );
+		//************************************************************************************************
 
-					$precio = Work::getRegister( 'Menus', 'precio', 'idMenu = '. $id );
-					$precio = $precio[ 'precio' ];
-					$monto = $monto + $precio;
-				}//end foreach
-
-				//Si se efectuo algun pedido
-				if( $monto > 0 ) {
-					if( Work::existRegister( "Pedidos", "nroMesa = " . $datos[ 'mesa' ] ) ) 
-						Work::updateRegister( "Pedidos", "monto = " . $monto, "nroMesa = " . $datos[ 'mesa' ] );
-					else
-						Work::setRegister( 'Pedidos', 'nroMesa, monto', $datos[ 'mesa' ] .', '. $monto );
-				}//end if interno
-
-			}//end if externo
-		}//end setPedido
 		
-		
-		//Obtiene los pedidos actuales de la mesa elegida
-		public function getCartSelect( &$mesaElegida ) 
-		{
-			//Obtiene los pedidos, el precio y la cantidad
-			$datos['pedidos'] = Work::execQuery(
-				"SELECT m.nombreMenu, m.precio, m.idMenu
-				FROM Menus as m
-				INNER JOIN PedidosMenus as pm
-				ON m.idMenu = pm.Menus_idMenu
-				AND pm.Pedidos_nroMesa = $mesaElegida", true );
-
-			//Obtiene el monto total del pedido
-			$datos[ 'monto' ] = Work::getRegister( 'Pedidos', 'monto', 'nroMesa = ' . $mesaElegida );
-			$datos[ 'monto' ] = $datos[ 'monto' ][ 'monto' ];
-
-			return $datos;
-		}//end getCartSelect
 	}//end Listar

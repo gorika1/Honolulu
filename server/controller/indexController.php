@@ -1,6 +1,7 @@
 <?php
 	
 	require_once 'server/model/listarModel.php';
+	require_once 'server/model/pedidosModel.php';
 	require_once 'server/drawing/indexDrawing.php';
  
 	class IndexController extends ControllerAJAX
@@ -15,14 +16,15 @@
 			} 
 			else if( parent::evaluateAdd( 'POST' ) )//Si se desea hacer un ingreso de datos			
 			{
-				$obj = new Listar();
-				//Guarda los pedidos de la mesa cambiada y obtiene los pedidos ya hechos por la mesa elegida
+				$obj = new Pedidos();
+				//Guarda los pedidos de la mesa
 				$obj->setPedido( $_POST );
 			}
 			//Si se quiere obtener los pedidos ya hechos por una mesa
 			else if( parent::evaluateGet( 'POST' ) )
 			{
-				$obj = new Listar();
+				$obj = new Pedidos();
+				//Obtiene los pedidos de la mesa
 				$pedidos = $obj->getCartSelect( $_POST[ 'mesa' ] );
 				echo json_encode($pedidos);
 			}

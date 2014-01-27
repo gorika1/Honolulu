@@ -3,12 +3,13 @@ var total = 0; //almacena el monto total del pedido
 
 //***********************************************************************************
 //Añade el pedido al carro de compras
-function addCart( food, price, id )
+function addCart( food, price, id, type )
 {
-	total = total + parseInt( price );
-	writePedido( id, food, price );
-
-	writeMontoTotal( total );
+	if( writePedido( id, food, price, type ) )
+	{
+		total = total + parseInt( price );
+		writeMontoTotal( total );
+	}
 
 	scrollResumen();
 }
@@ -28,9 +29,12 @@ function getPedidos(mesa)
 		},
 		success:function( data ){
 			for( i in data.pedidos ){
-				writePedido( data.pedidos[i].idMenu, data.pedidos[i].nombreMenu, data.pedidos[i].precio, true );
+				writePedido( data.pedidos[i].idMenu, data.pedidos[i].nombreMenu || data.pedidos[i].nombrePizza, data.pedidos[i].precio, data.pedidos[i].tipo, true );
 			}
 			writeMontoTotal( data.monto );
+			
+			if( data.monto != null )
+				total = parseInt( data.monto );
 		},
 		ifModified: false,
 		processData: true,
@@ -45,11 +49,7 @@ function getPedidos(mesa)
 
 function saveCart(mesa)
 {
-	var pedidos = getCart();
-	//Pasa de array a un objeto JSON
-	var oPedidos = {};
-	for( i in pedidos )
-		oPedidos[i] = pedidos[i];
+	var oPedidos = getCart();
 
 	oPedidos = encodeURI( JSON.stringify( oPedidos ) );
 	//Obtiene el id de la mesa seleccionada
@@ -58,21 +58,14 @@ function saveCart(mesa)
 	$.ajax({
 
 		url: '',
-		data: {'ajax':'true','add':'true','data':oPedidos,/*'before':beforeMesa,*/ 'mesa':idMesa },
+		data: {'ajax':'true','add':'true','data':oPedidos, 'mesa':idMesa },
 		contentType: 'application/x-www-form-urlencoded',
 		error: function() {
 			alert( 'Ha ocurrido un error' );
 		},
 		success:function(data){
-			console.log('hecho');
 			$('#resumen .food-order, #resumen .food-order-price' ).removeClass('pendiente');
 			$('#resumen .food-order, #resumen .food-order-price' ).removeClass('enviado');
-			//Borra todo lo que hay en el contenedor resumen
-			/*content = document.getElementById( 'resumen' );
-			while( content.hasChildNodes() )
-				content.removeChild( content.firstChild );*/
-			//Y vuelve a escribir ya con los pedidos de la mesa seleccionada
-			//showCartSelect(data);
 		},
 		ifModified: false,
 		processData: true,
@@ -104,40 +97,49 @@ function changeMesa(mesa)
 
 function getCart()
 {
-	var idPedidos = new Array();//almacena todos los idMenu
-	var cantidad = $('#resumen .pendiente').length;//Cantidad de pedidos pendientes
+	var oPedidos = {};//almacena todos los idMenu
+	var cantidad = $('#resumen .food-order.pendiente').length;//Cantidad de pedidos pendientes
+
 	for( i = 0; i < cantidad; i++ )
 	{
-		var id = $('#resumen .pendiente:eq(' + i + ')' ).attr('id-add');//Obtiene el id de los pedidos pendientes
-		idPedidos.push( id );
+		var id = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('id-add');//Obtiene el id de los pedidos pendientes
+		var type = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('type');//Obtiene el id de los pedidos pendientes
+		oPedidos[i] = { 'id':id, 'type': type };
 	}
 		
 	monto = $("#monto").text();
 	monto = monto.replace( ' ', '' );
 	
-	return idPedidos;
+	return oPedidos;
 }//end getPedidos
 
 //**************************************************************************
 
-function writePedido( id, food, precio, got )
+function writePedido( id, food, precio, type, got )
 {
 	//Si fue obtenido desde la base de datos (es decir, ya se habia enviado)
 	if( got )
 		$('#resumen').append(
-			'<span class="food-order enviado" id-add=' + id + '>' + food + '</span>' +
+			'<span class="food-order enviado" id-add=\"' + id + '\" type=\"' + type + '\">' + food + '</span>' +
 			'<span class="food-order-price enviado">' + precio + '</span>'
 		);
 	else {
 		//Si aun no se agrego el elemento seleccionado
-		if( id != $('.food-order[id-add=' + id + ']').attr('id-add') )		
+		if( id != $('.food-order[id-add=' + id + '][type=' + type + ']').attr('id-add') ||
+			type != $('.food-order[id-add=' + id + '][type=' + type + ']').attr('type' ) )	
+		{			
 			$('#resumen').append(
-				'<span class="food-order pendiente" id-add=' + id + '>' + food + '</span>' +
+				'<span class="food-order pendiente" id-add=\"' + id + '\" type=\"' + type + '\">' + food + '</span>' +
 				'<span class="food-order-price pendiente">' + precio + '</span>'
 			);
+
+			return true;
+		}
 		else
 			alert( 'Este alimento ya esta entre los pedidos' );
 	}//end else externo
+
+	return false;
 
 }//end writePedido
 

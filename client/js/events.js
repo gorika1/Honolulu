@@ -21,7 +21,9 @@ $(document).on( 'ready', function(){
 		
 		id = $(this).attr('id-add');
 
-		addCart( food, precio, id );
+		type = $(this).attr('type');
+
+		addCart( food, precio, id, type );
 	});
 
 	//Controla el popup para la eleccion de la mesa
@@ -40,6 +42,11 @@ $(document).on( 'ready', function(){
 	$('.exception').on('click', function() {
 		var mesa = $(this).attr('id');
 		mesa = mesa.replace( '-', ' ' );
+		//Borra todos los pedidos para luego cargar los pedidos de la mesa respectiva
+		content = document.getElementById( 'resumen' );
+		while( content.hasChildNodes() )
+			content.removeChild( content.firstChild );
+
 		changeMesa(mesa);//pasa la mesa que se eligio para que se determine si se cambio
 	});
 

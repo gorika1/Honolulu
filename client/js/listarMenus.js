@@ -45,6 +45,7 @@ function updateLista( data )
 		dom = dom.replace( "{Nombre}", data.Menus[i].Nombre );
 		dom = dom.replace( "{Ingredientes}", data.Menus[i].Ingredientes );
 		dom = dom.replace( "{Precio}", data.Menus[i].Precio );
+		dom = dom.replace( "{Type}", data.Menus[i].Type )
 		html = html + dom;
 	}
 
