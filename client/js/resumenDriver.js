@@ -32,7 +32,7 @@ function getPedidos(mesa)
 				writePedido( data.pedidos[i].idMenu, data.pedidos[i].nombreMenu || data.pedidos[i].nombrePizza, data.pedidos[i].precio, data.pedidos[i].tipo, true );
 			}
 			writeMontoTotal( data.monto );
-			
+
 			if( data.monto != null )
 				total = parseInt( data.monto );
 		},
@@ -87,6 +87,7 @@ function changeMesa(mesa)
 	{
 		$('#popup').text(mesa);
 		var idMesa = mesa.replace( 'Mesa ', '' );
+		total = 0;
 		getPedidos(idMesa);
 	}//end if
 
