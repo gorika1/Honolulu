@@ -80,8 +80,6 @@
 			}
 			else
 				Work::setRegister( 'Pedidos', 'nroMesa, monto', $this->mesa .', '. $this->monto );
-
-			Work::viewQuery();
 		}
 
 		

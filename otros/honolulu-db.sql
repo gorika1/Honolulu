@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-01-2014 a las 01:43:27
+-- Tiempo de generación: 27-01-2014 a las 21:06:34
 -- Versión del servidor: 5.6.12
 -- Versión de PHP: 5.5.1
 
@@ -19,10 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `honolulu-db`
 --
--- --------------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `honolulu-db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 
-USE `honolulu-db` ;
+-- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `Bebidas`
@@ -32,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `Bebidas` (
   `idBebida` int(11) NOT NULL AUTO_INCREMENT,
   `nombreBebida` varchar(45) NOT NULL,
   PRIMARY KEY (`idBebida`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -44,18 +42,20 @@ CREATE TABLE IF NOT EXISTS `Ingredientes` (
   `idIngrediente` int(11) NOT NULL AUTO_INCREMENT,
   `nombreIngrediente` varchar(45) NOT NULL,
   PRIMARY KEY (`idIngrediente`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Volcado de datos para la tabla `Ingredientes`
 --
 
 INSERT INTO `Ingredientes` (`idIngrediente`, `nombreIngrediente`) VALUES
-(1, 'Colchon de hojas verdes'),
-(2, 'Virutas de queso parmesano'),
-(3, 'Crotones'),
-(4, 'Tiras de pollo'),
-(5, 'Aderezo caesar');
+(1, 'Ingrediente 1'),
+(2, 'Ingrediente 2'),
+(3, 'Ingrediente 3'),
+(4, 'Ingrediente 4'),
+(5, 'Ingrediente 5'),
+(6, 'Ingrediente 6'),
+(7, 'Ingrediente 7');
 
 -- --------------------------------------------------------
 
@@ -109,8 +109,15 @@ INSERT INTO `IngredientesMenus` (`Menus_idMenu`, `Ingredientes_idIngrediente`) V
 (1, 1),
 (1, 2),
 (1, 3),
-(1, 4),
-(1, 5);
+(2, 4),
+(2, 5),
+(2, 6),
+(3, 1),
+(3, 2),
+(3, 7),
+(4, 3),
+(4, 4),
+(4, 5);
 
 -- --------------------------------------------------------
 
@@ -124,7 +131,18 @@ CREATE TABLE IF NOT EXISTS `IngredientesPizzas` (
   PRIMARY KEY (`Pizzas_idPizza`,`Ingredientes_idIngrediente`),
   KEY `fk_Pizzas_has_Ingredientes_Ingredientes1_idx` (`Ingredientes_idIngrediente`),
   KEY `fk_Pizzas_has_Ingredientes_Pizzas1_idx` (`Pizzas_idPizza`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `IngredientesPizzas`
+--
+
+INSERT INTO `IngredientesPizzas` (`Pizzas_idPizza`, `Ingredientes_idIngrediente`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 4),
+(2, 5);
 
 -- --------------------------------------------------------
 
@@ -139,16 +157,17 @@ CREATE TABLE IF NOT EXISTS `Menus` (
   `TiposMenus_idTipoMenu` int(11) NOT NULL,
   PRIMARY KEY (`idMenu`),
   KEY `fk_Menus_TiposMenus1_idx` (`TiposMenus_idTipoMenu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `Menus`
 --
 
 INSERT INTO `Menus` (`idMenu`, `nombreMenu`, `precio`, `TiposMenus_idTipoMenu`) VALUES
-(1, 'Caesar salad con pollo', 30000, 1),
-(2, 'Caesar salad con poll', 30000, 1),
-(3, 'Caesar salad con pollo', 30000, 2);
+(1, 'Prueba Salads 1', 20000, 1),
+(2, 'Prueba Salads 2', 30000, 1),
+(3, 'Prueba Appetizers 1', 15000, 2),
+(4, 'Prueba Appetizers 2', 20000, 2);
 
 -- --------------------------------------------------------
 
@@ -158,9 +177,16 @@ INSERT INTO `Menus` (`idMenu`, `nombreMenu`, `precio`, `TiposMenus_idTipoMenu`) 
 
 CREATE TABLE IF NOT EXISTS `Pedidos` (
   `nroMesa` int(11) NOT NULL,
-  `monto` float(6,2) DEFAULT NULL,
+  `monto` int(11) DEFAULT NULL,
   PRIMARY KEY (`nroMesa`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `Pedidos`
+--
+
+INSERT INTO `Pedidos` (`nroMesa`, `monto`) VALUES
+(1, 120000);
 
 -- --------------------------------------------------------
 
@@ -192,6 +218,14 @@ CREATE TABLE IF NOT EXISTS `PedidosMenus` (
   KEY `fk_Pedidos_has_Menus_Pedidos_idx` (`Pedidos_nroMesa`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `PedidosMenus`
+--
+
+INSERT INTO `PedidosMenus` (`Pedidos_nroMesa`, `Menus_idMenu`, `cantidad`) VALUES
+(1, 1, NULL),
+(1, 2, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -208,6 +242,13 @@ CREATE TABLE IF NOT EXISTS `PedidosPizzas` (
   KEY `fk_Pedidos_has_Pizzas_Pedidos1_idx` (`Pedidos_nroMesa`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `PedidosPizzas`
+--
+
+INSERT INTO `PedidosPizzas` (`Pedidos_nroMesa`, `Pizzas_idPizza`, `cantidad`, `idCombinado`) VALUES
+(1, 2, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -219,7 +260,15 @@ CREATE TABLE IF NOT EXISTS `Pizzas` (
   `nombrePizza` varchar(45) NOT NULL,
   `precio` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idPizza`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Volcado de datos para la tabla `Pizzas`
+--
+
+INSERT INTO `Pizzas` (`idPizza`, `nombrePizza`, `precio`) VALUES
+(1, 'Pizza de Prueba 1', '30000'),
+(2, 'Pizza de Prueba 2', '70000');
 
 -- --------------------------------------------------------
 
@@ -231,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `TiposMenus` (
   `idTipoMenu` int(11) NOT NULL AUTO_INCREMENT,
   `tipoMenu` varchar(20) NOT NULL,
   PRIMARY KEY (`idTipoMenu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `TiposMenus`
@@ -239,24 +288,7 @@ CREATE TABLE IF NOT EXISTS `TiposMenus` (
 
 INSERT INTO `TiposMenus` (`idTipoMenu`, `tipoMenu`) VALUES
 (1, 'Salads'),
-(2, 'Picadas');
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `IngredientesPizzas`
---
-ALTER TABLE `IngredientesPizzas`
-  ADD CONSTRAINT `fk_Pizzas_has_Ingredientes_Ingredientes1` FOREIGN KEY (`Ingredientes_idIngrediente`) REFERENCES `Ingredientes` (`idIngrediente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Pizzas_has_Ingredientes_Pizzas1` FOREIGN KEY (`Pizzas_idPizza`) REFERENCES `Pizzas` (`idPizza`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `Menus`
---
-ALTER TABLE `Menus`
-  ADD CONSTRAINT `fk_Menus_TiposMenus1` FOREIGN KEY (`TiposMenus_idTipoMenu`) REFERENCES `TiposMenus` (`idTipoMenu`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+(2, 'Appetizers');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
