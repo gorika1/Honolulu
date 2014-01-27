@@ -48,7 +48,7 @@
 			}
 			else if( $requestType == 'POST')
 			{
-				if( ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] == true ) && ( isset( $_GET[ 'add' ] ) && $_GET[ 'add'] == true ) ) 
+				if( ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] == true ) && ( isset( $_POST[ 'add' ] ) && $_POST[ 'add'] == true ) ) 
 				{
 					return true;
 				}//end if mas interno
@@ -58,7 +58,28 @@
 			
 		}//end evaluateUpdate
 
+		//************************************************************************************************
 
+		public function evaluateGet( $requestType )
+		{
+			if( $requestType == 'GET' )
+			{
+				if( ( isset( $_GET[ 'ajax' ] ) && $_GET[ 'ajax' ] == true ) && isset( $_GET[ 'get' ] ) ) 
+				{
+					return true;
+				}
+
+			}
+			else if( $requestType == 'POST')
+			{
+				if( ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] == true ) && isset( $_POST[ 'get' ] ) ) 
+				{
+					return true;
+				}//end if mas interno
+			}///end if interno
+
+			return false;
+		}
 
 		//**************************************************************************************************
 

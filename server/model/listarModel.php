@@ -101,21 +101,21 @@
 		//Guarda el pedido cuando la mesa se haya cambiado
 		public function setPedido( &$datos = array() )
 		{
-			if( isset( $datos[ 'before' ] ) && isset( $datos[ 'data' ] ) )
+			if( isset( $datos[ 'mesa' ] ) && isset( $datos[ 'data' ] ) )
 			{
 				//$datos['before'] almacena la mesa que se cambio
 				//$datos['current'] almacena la mesa seleccionada
-
+				
 				//Decodifica los idMenus
 				$idMenus = json_decode( urldecode( $datos['data'] ) );
 
 				$monto = 0;//monto de la compra
-
 				foreach ( $idMenus as $id ) {
-					if( Work::existRegister( 'PedidosMenus', 'Pedidos_nroMesa = ' . $datos[ 'before' ] . ' AND Menus_idMenu = ' . $id ) )
-						Work::updateRegister( 'PedidosMenus', 'Menus_idMenu = ' . $id, 'Pedidos_nroMesa = ' . $datos[ 'before' ] );
+					echo 'hola';
+					if( Work::existRegister( 'PedidosMenus', 'Pedidos_nroMesa = ' . $datos[ 'mesa' ] . ' AND Menus_idMenu = ' . $id ) )
+						Work::updateRegister( 'PedidosMenus', 'Menus_idMenu = ' . $id, 'Pedidos_nroMesa = ' . $datos[ 'mesa' ] );
 					else
-						Work::setRegister( 'PedidosMenus', 'Pedidos_nroMesa, Menus_idMenu', $datos[ 'before' ] . ', ' . $id );
+						Work::setRegister( 'PedidosMenus', 'Pedidos_nroMesa, Menus_idMenu', $datos[ 'mesa' ] . ', ' . $id );
 
 					$precio = Work::getRegister( 'Menus', 'precio', 'idMenu = '. $id );
 					$precio = $precio[ 'precio' ];
@@ -124,19 +124,13 @@
 
 				//Si se efectuo algun pedido
 				if( $monto > 0 ) {
-					if( Work::existRegister( "Pedidos", "nroMesa = " . $datos[ 'before' ] ) ) 
-						Work::updateRegister( "Pedidos", "monto = " . $monto, "nroMesa = " . $datos[ 'before' ] );
+					if( Work::existRegister( "Pedidos", "nroMesa = " . $datos[ 'mesa' ] ) ) 
+						Work::updateRegister( "Pedidos", "monto = " . $monto, "nroMesa = " . $datos[ 'mesa' ] );
 					else
-						Work::setRegister( 'Pedidos', 'nroMesa, monto', $datos[ 'before' ] .', '. $monto );
+						Work::setRegister( 'Pedidos', 'nroMesa, monto', $datos[ 'mesa' ] .', '. $monto );
 				}//end if interno
 
 			}//end if externo
-			if( isset( $datos[ 'current' ] ) )
-			{
-				//Obtiene los pedidos ya hechos por la mesa elegida
-				$pedido = $this->getCartSelect( $datos['current'] );
-				return $pedido;
-			}
 		}//end setPedido
 		
 		
@@ -154,6 +148,7 @@
 			//Obtiene el monto total del pedido
 			$datos[ 'monto' ] = Work::getRegister( 'Pedidos', 'monto', 'nroMesa = ' . $mesaElegida );
 			$datos[ 'monto' ] = $datos[ 'monto' ][ 'monto' ];
+
 			return $datos;
 		}//end getCartSelect
 	}//end Listar

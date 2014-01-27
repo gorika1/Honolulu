@@ -34,6 +34,8 @@
 			}
 		}
 
+		//***********************************************************************
+
 		public function menusList( $lista ) {
 			//Por cada menu
 			foreach( $lista as $menu ) {

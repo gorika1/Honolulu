@@ -5,31 +5,45 @@
  
 	class IndexController extends ControllerAJAX
 	{
-		public function __construct( $idTipoMenu = null, $addData = null )
+		public function __construct( $idTipoMenu = null )
 		{
-			$page = new IndexDrawing();
-			//Si la peticion se hace por AJAX (la actulizacion de la lista)
-			if( parent::evaluateUpdate( 'GET' ) )
+			//Si la peticion se hace por AJAX (la actualizacion de la lista)
+			if( parent::evaluateUpdate( 'POST' ) )
+			{
+				$page = new IndexDrawing();
 				parent::callDraw( $page, array( $idTipoMenu, true ) );
-
-			else if( parent::evaluateAdd( 'GET' ) )//Si se desea hacer un ingreso de datos			
+			} 
+			else if( parent::evaluateAdd( 'POST' ) )//Si se desea hacer un ingreso de datos			
 			{
 				$obj = new Listar();
 				//Guarda los pedidos de la mesa cambiada y obtiene los pedidos ya hechos por la mesa elegida
-				$pedidos = $obj->setPedido( $_GET );
+				$obj->setPedido( $_POST );
+			}
+			//Si se quiere obtener los pedidos ya hechos por una mesa
+			else if( parent::evaluateGet( 'POST' ) )
+			{
+				$obj = new Listar();
+				$pedidos = $obj->getCartSelect( $_POST[ 'mesa' ] );
 				echo json_encode($pedidos);
 			}
 			else
-				$page->drawPage( 'Honolulu', array( "Lista( 1 )" ) );//Traduce la pagina
+			{			
+				$page = new IndexDrawing();
+				$page->drawPage( 'Honolulu', array( "Lista( 1 )" ) );//Dibuja la pagina
+			}
+				
 			
 		}
 		
 	}
 	
-	if( isset( $_GET[ 'idTipoMenu' ] ) )//Si la peticion se hizo por AJAX y se quiere obtener los menus
-		$obj = new IndexController( $_GET[ 'idTipoMenu' ] );
-	else if( isset( $_GET['data']))//Si hay una peticion ajax para ingresar datos
-		$obj = new IndexController( null, $_GET['data'] );
+	if( isset( $_POST[ 'ajax' ] ) )
+	{
+		if( isset( $_POST[ 'idTipoMenu' ] ) )//Si la peticion se hizo por AJAX y se quiere obtener los menus
+			$obj = new IndexController( $_POST[ 'idTipoMenu' ] );
+		else
+			$obj = new IndexController();
+	}
 	else
 		$obj = new IndexController();//Si es para el dibujado inicial de la pagina
 

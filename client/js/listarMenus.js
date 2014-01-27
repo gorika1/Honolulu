@@ -1,26 +1,3 @@
-$(document).on( 'ready', function(){
-	//Llama a scrollBar en la primera carga de la pagina
-	scrollFoods();
-
-	$('.bg-rect').on( 'click', function(){
-
-		id = $(this).attr('option-value');
-		$( '.active' ).removeClass('active');//borra la clase active del elemento anterior
-		$(':first-child', this ).addClass( 'active' );//asigna la clase al elemento actual
-		getLista( id );//llama a la funcion getLista y pasa el id del tipo del menu
-	});
-
-	//Toma a navigation como referencia ya que el resto es creado automaticamente
-	//y cuando se actualiza ya no funciona
-	$('#navigation').on('click', '.food-add' ,function(){
-		idMenu = $(this).attr('id');
-		addCart( this, idMenu );
-	});
-
-});
-
-//********************************************************************************
-
 function getLista( idTipoMenu )
 {
 	$.ajax({
@@ -39,7 +16,7 @@ function getLista( idTipoMenu )
 			updateLista( data );
 
 		},
-		type: 'GET',
+		type: 'POST',
 		timeout: 3000
 
 	});
