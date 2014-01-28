@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-01-2014 a las 21:18:16
+-- Tiempo de generación: 28-01-2014 a las 10:33:08
 -- Versión del servidor: 5.6.12
 -- Versión de PHP: 5.5.1
 
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `PedidosBebidas` (
 CREATE TABLE IF NOT EXISTS `PedidosMenus` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Menus_idMenu` int(11) NOT NULL,
-  `cantidad` varchar(45) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Menus_idMenu`),
   KEY `fk_Pedidos_has_Menus_Menus1_idx` (`Menus_idMenu`),
   KEY `fk_Pedidos_has_Menus_Pedidos_idx` (`Pedidos_nroMesa`)
@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `PedidosMenus` (
 CREATE TABLE IF NOT EXISTS `PedidosPizzas` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Pizzas_idPizza` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
   `idCombinado` int(11) DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Pizzas_idPizza`),
   KEY `fk_Pedidos_has_Pizzas_Pizzas1_idx` (`Pizzas_idPizza`),
