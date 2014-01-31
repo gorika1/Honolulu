@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 28-01-2014 a las 10:33:08
+-- Tiempo de generación: 01-02-2014 a las 00:51:34
 -- Versión del servidor: 5.6.12
 -- Versión de PHP: 5.5.1
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `honolulu-db`
 --
+CREATE DATABASE IF NOT EXISTS `honolulu-db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `honolulu-db`;
 
 -- --------------------------------------------------------
 
@@ -29,8 +31,17 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `Bebidas` (
   `idBebida` int(11) NOT NULL AUTO_INCREMENT,
   `nombreBebida` varchar(45) NOT NULL,
+  `precio` int(11) DEFAULT NULL,
   PRIMARY KEY (`idBebida`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Volcado de datos para la tabla `Bebidas`
+--
+
+INSERT INTO `Bebidas` (`idBebida`, `nombreBebida`, `precio`) VALUES
+(1, 'Prueba de Bebida 1', 15000),
+(2, 'Prueba de Bebida 2', 20000);
 
 -- --------------------------------------------------------
 
@@ -236,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `PedidosPizzas` (
 CREATE TABLE IF NOT EXISTS `Pizzas` (
   `idPizza` int(11) NOT NULL AUTO_INCREMENT,
   `nombrePizza` varchar(45) NOT NULL,
-  `precio` varchar(45) DEFAULT NULL,
+  `precio` int(11) DEFAULT NULL,
   PRIMARY KEY (`idPizza`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -245,8 +256,8 @@ CREATE TABLE IF NOT EXISTS `Pizzas` (
 --
 
 INSERT INTO `Pizzas` (`idPizza`, `nombrePizza`, `precio`) VALUES
-(1, 'Pizza de Prueba 1', '30000'),
-(2, 'Pizza de Prueba 2', '70000');
+(1, 'Pizza de Prueba 1', 30000),
+(2, 'Pizza de Prueba 2', 70000);
 
 -- --------------------------------------------------------
 

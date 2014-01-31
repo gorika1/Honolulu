@@ -29,8 +29,8 @@ function getPedidos(mesa)
 		},
 		success:function( data ){
 			for( i in data.pedidos ){
-				writePedido( data.pedidos[i].idMenu || data.pedidos[i].idPizza, 
-					data.pedidos[i].nombreMenu || data.pedidos[i].nombrePizza, 
+				writePedido( data.pedidos[i].idMenu || data.pedidos[i].idPizza || data.pedidos[i].idBebida, 
+					data.pedidos[i].nombreMenu || data.pedidos[i].nombrePizza || data.pedidos[i].nombreBebida, 
 					data.pedidos[i].precio, data.pedidos[i].tipo, true );
 			}
 			writeMontoTotal( data.monto );

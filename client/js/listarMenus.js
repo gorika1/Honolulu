@@ -1,7 +1,12 @@
 function getLista( idTipoMenu )
 {
 	$.ajax({
-
+		beforeSend: function() {
+			feedback();
+		},
+		complete: function() {
+			$.unblockUI();
+		},
 		url: '',
 		data: {'ajax':'true','update':'Lista', 'idTipoMenu':idTipoMenu },
 		contentType: 'application/x-www-form-urlencoded',
@@ -22,6 +27,21 @@ function getLista( idTipoMenu )
 	});
 }//end getLista
 
+
+//**********************************************************************************
+
+//Loading feedback
+function feedback() {
+  	$.blockUI({ css: { 
+        border: 'none', 
+        padding: '15px', 
+        backgroundColor: '#000', 
+        '-webkit-border-radius': '10px', 
+        '-moz-border-radius': '10px', 
+        opacity: .5, 
+        color: '#fff' 
+    } }); 
+}
 
 
 //***********************************************************************************

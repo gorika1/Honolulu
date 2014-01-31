@@ -13,7 +13,7 @@
 			{
 				$this->mesa = $datos[ 'mesa' ];
 
-				//Decodifica los idMenus
+				//Decode the ids and types
 				$idFoods = json_decode( urldecode( $datos['data'] ), true );
 
 				$monto = 0;//monto de la compra
@@ -24,10 +24,14 @@
 					{
 						$this->setPedidoMenu( $food );
 					}
-					else if( $food[ 'type' ] == 2 ) 
+					else if( $food[ 'type' ] == 2 )
 					{
 						$this->setPedidoPizza( $food );
-					}//end if				
+					}//end if
+					else if( $food[ 'type' ] == 3 )
+					{
+						$this->setPedidoBebida( $food );
+					}
 				}//end foreach
 				
 				$this->setMontoPedido();
@@ -60,7 +64,7 @@
 			else
 				Work::setRegister( 'PedidosPizzas', 'Pedidos_nroMesa, Pizzas_idPizza', $this->mesa . ', ' . $food[ 'id' ] );
 
-			$precio = Work::getRegister( 'Pizzas', 'precio', 'idPizza = '. $food [ 'id' ] );
+			$precio = Work::getRegister( 'Pizzas', 'precio', 'idPizza = '. $food [ 'id' ]  );
 			$precio = $precio[ 'precio' ];
 			$this->monto = $this->monto + $precio;
 		}
@@ -68,6 +72,21 @@
 
 		//***********************************************************************************************
 
+
+		private function setPedidoBebida( &$food )
+		{
+			if( Work::existRegister( 'PedidosBebidas', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Bebidas_idBebida = ' . $food[ 'id' ] ) )
+				Work::updateRegister( 'PedidosBebidas', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Bebidas_idBebida = ' . $food[ 'id' ] );
+			else
+				Work::setRegister( 'PedidosBebidas', 'Pedidos_nroMesa, Bebidas_idBebida', $this->mesa . ', ' . $food[ 'id' ] );
+
+			$precio = Work::getRegister( 'Bebidas', 'precio', 'idBebida = '. $food [ 'id' ]  );
+			$precio = $precio[ 'precio' ];
+			$this->monto = $this->monto + $precio;
+		}
+
+
+		//***********************************************************************************************
 
 		private function setMontoPedido()
 		{
@@ -91,6 +110,7 @@
 		{
 			$this->getPedidosMenus( $mesaElegida );
 			$this->getPedidosPizzas( $mesaElegida );
+			$this->getPedidosBebidas( $mesaElegida );
 
 			//Obtiene el monto total del pedido
 			$this->datos[ 'monto' ] = Work::getRegister( 'Pedidos', 'monto', 'nroMesa = ' . $mesaElegida );
@@ -133,5 +153,24 @@
 			$array = array_merge( $this->datos[ 'pedidos' ], $datos['pedidos'] );
 
 			$this->datos[ 'pedidos' ] = $array;
-		}
-	}
+		}//end getPeddidosPizzas
+
+		//*************************************************************************************
+
+		private function getPedidosBebidas( &$mesaElegida )
+		{
+			$datos['pedidos'] = Work::execQuery(
+				"SELECT b.nombreBebida, b.precio, b.idBebida
+				FROM Bebidas as b
+				INNER JOIN PedidosBebidas as pb
+				ON b.idBebida = pb.Bebidas_idBebida
+				AND pb.Pedidos_nroMesa = $mesaElegida", true );
+
+			for( $i = 0; $i < sizeof( $datos['pedidos'] ); $i++ )
+				$datos['pedidos'][ $i ][ 'tipo' ] = 3;
+
+			$array = array_merge( $this->datos[ 'pedidos' ], $datos['pedidos'] );
+
+			$this->datos[ 'pedidos' ] = $array;
+		}//end getPedidosBebidas
+	}//end Pedidos

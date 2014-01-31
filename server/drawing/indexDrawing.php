@@ -11,21 +11,26 @@
 		}
 		
 		public function drawLista( $idTipoMenu, $isAJAX = false )
-		{			
+		{
 			$lista = $this->myListar->getLista( $idTipoMenu );
 			$this->setList( 'menu' );
 
-			if( $idTipoMenu == 6 ) {
+			if( $idTipoMenu == 6 ) 
+			{
 				$this->pizzasList( $lista );
-			} else {
+			} 
+			else if( $idTipoMenu == 7 )
+			{
+				$this->drinkList( $lista );
+			} 
+			else 
+			{
 				$this->menusList( $lista );
 			}	
 
 			//Si no es una peticion AJAX
 			if( !$isAJAX )
-			{
 				$this->draw( 'Menus' );
-			} 
 			else
 			{	
 				$list[ 'Menus' ] = $this->list;
@@ -53,11 +58,11 @@
 		}//menusList
 
 
-		//***************************************************************
+		//**********************************************************************************
 
-		public function pizzasList( $lista ) {
+		public function pizzasList( $list ) {
 			//Por cada pizza
-			foreach( $lista as $pizza ) {
+			foreach( $list as $pizza ) {
 
 				//Se almacena los siguientes elementos en list[]
 				$this->list[] = array(
@@ -68,6 +73,25 @@
 						'Type' => 2					
 					);
 				
+			}//end foreach
+		}//end pizzasList
+
+
+		//**********************************************************************************
+
+		public function drinkList( $list ) {
+			//Each drink
+
+			foreach ( $list as $drink ) {
+
+				//Store the followed elements in list[]
+				$this->list[] = array(
+						'idMenu' => $drink[ 'idBebida' ],
+						'Nombre' => $drink[ 'nombreBebida' ],
+						'Precio' => $drink[ 'precio' ],
+						'Ingredientes' => '',
+						'Type' => 3,
+					);
 			}//end foreach
 		}
 

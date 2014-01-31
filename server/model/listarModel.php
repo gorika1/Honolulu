@@ -14,7 +14,7 @@
 			if( $id == 6 ) {
 				$this->getListaPizzas();
 			} else if( $id == 7 ) { //Si la peticion quiere las bebidas
-				$this->lista = Work::getRegisters( 'Bebidas', 'idBebida, nombreBebida' );
+				$this->lista = Work::getRegisters( 'Bebidas', 'idBebida, nombreBebida, precio' );
 			} else {
 				$this->getListaMenu( $id );
 			}//end if else interno
