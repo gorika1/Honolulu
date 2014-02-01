@@ -1,8 +1,12 @@
 $(document).on( 'ready', function(){
+
 	//Llama a scrollBar en la primera carga de la pagina
 	scrollFoods();
 
 	getPedidos( 1 );//En la primera carga de pagina que obtenga los pedidos de la mesa 1
+
+
+	//******************** CAMBIO DE TIPO DE MENU *********************************
 
 	$('.bg-rect').on( 'click', function(){
 		id = $(this).attr('option-value');
@@ -11,20 +15,38 @@ $(document).on( 'ready', function(){
 		getLista( id );//llama a la funcion getLista y pasa el id del tipo del menu
 	});
 
+
+	//*********************** CARRITO DE PEDIDOS ***********************************
+
 	//Toma a navigation como referencia ya que el resto es creado automaticamente
 	//y cuando se actualiza ya no funciona
 	$('#navigation').on('click', '.food-add' ,function(){
 		food = $(this).attr('food');//Obtiene el nombre del menu
 
-		precio = $(this).siblings();//obtiene al hermano del elemento en cuestion (es decir el precio)
-		precio = $(precio).text().replace( 'Precio: ', '' );//extrae solamente el monto
+		precio = $(this).parent().siblings('.price').find('.food-price').text();//obtiene al hermano del elemento en cuestion (es decir el precio)
+		precio = precio.replace( 'Precio: ', '' );//extrae solamente el monto
 		
 		id = $(this).attr('id-add');
 
 		type = $(this).attr('type');
 
-		addCart( food, precio, id, type );
+		amount = $(this).parent().siblings('.food-amount').find('.amount').attr('value');		
+
+		addCart( food, precio, id, amount, type );
 	});
+
+
+	//Controla la presion del boton para enviar el pedido
+	$( '#enviar img' ).on( 'click', function() {
+		if( confirm( 'Quieres enviar el pedido?' ) ) 
+		{
+			var mesa = $('#popup').text();
+			saveCart( mesa );
+		}		
+	});
+
+
+	//********************************** POPUP **********************************************
 
 	//Controla el popup para la eleccion de la mesa
 	$('#popup').on( 'click', function(){
@@ -51,13 +73,7 @@ $(document).on( 'ready', function(){
 	});
 
 
-	//Controla la presion del boton para enviar el pedido
-	$( '#enviar img' ).on( 'click', function() {
-		if( confirm( 'Quieres enviar el pedido?' ) ) 
-		{
-			var mesa = $('#popup').text();
-			saveCart( mesa );
-		}		
-	});
-
+	//*********************** CANTIDAD DE UN MISMO PEDIDO ********************************
+	cantidad();
+	
 });

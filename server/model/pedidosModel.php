@@ -17,7 +17,7 @@
 				$idFoods = json_decode( urldecode( $datos['data'] ), true );
 
 				$monto = 0;//monto de la compra
-
+				print_r($idFoods);
 				foreach ( $idFoods as $food ) 
 				{
 					if( $food[ 'type' ] == 1 ) 
@@ -44,14 +44,13 @@
 
 		private function setPedidoMenu( &$food )
 		{
-			if( Work::existRegister( 'PedidosMenus', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Menus_idMenu = ' . $food[ 'id' ] ) )
-				Work::updateRegister( 'PedidosMenus', 'Menus_idMenu = ' . $food[ 'id' ], 'Pedidos_nroMesa = ' . $this->mesa);
-			else
-				Work::setRegister( 'PedidosMenus', 'Pedidos_nroMesa, Menus_idMenu', $this->mesa . ', ' . $food[ 'id' ] );
+			Work::setRegister( 'PedidosMenus', 
+				'Pedidos_nroMesa, Menus_idMenu, cantidad', 
+				$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
 
 			$precio = Work::getRegister( 'Menus', 'precio', 'idMenu = '. $food[ 'id' ] );
 			$precio = $precio[ 'precio' ];
-			$this->monto = $this->monto + $precio;
+			$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
 		}
 
 
@@ -59,14 +58,13 @@
 
 		private function setPedidoPizza( &$food )
 		{
-			if( Work::existRegister( 'PedidosPizzas', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Pizzas_idPizza = ' . $food[ 'id' ] ) )
-				Work::updateRegister( 'PedidosPizzas', 'Pizzas_idPizza = ' . $food[ 'id' ], 'Pedidos_nroMesa = ' . $this->mesa );
-			else
-				Work::setRegister( 'PedidosPizzas', 'Pedidos_nroMesa, Pizzas_idPizza', $this->mesa . ', ' . $food[ 'id' ] );
+			Work::setRegister( 'PedidosPizzas', 
+				'Pedidos_nroMesa, Pizzas_idPizza, cantidad', 
+				$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
 
 			$precio = Work::getRegister( 'Pizzas', 'precio', 'idPizza = '. $food [ 'id' ]  );
 			$precio = $precio[ 'precio' ];
-			$this->monto = $this->monto + $precio;
+			$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
 		}
 
 
@@ -75,14 +73,13 @@
 
 		private function setPedidoBebida( &$food )
 		{
-			if( Work::existRegister( 'PedidosBebidas', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Bebidas_idBebida = ' . $food[ 'id' ] ) )
-				Work::updateRegister( 'PedidosBebidas', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Bebidas_idBebida = ' . $food[ 'id' ] );
-			else
-				Work::setRegister( 'PedidosBebidas', 'Pedidos_nroMesa, Bebidas_idBebida', $this->mesa . ', ' . $food[ 'id' ] );
+			Work::setRegister( 'PedidosBebidas', 
+				'Pedidos_nroMesa, Bebidas_idBebida, cantidad', 
+				$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
 
 			$precio = Work::getRegister( 'Bebidas', 'precio', 'idBebida = '. $food [ 'id' ]  );
 			$precio = $precio[ 'precio' ];
-			$this->monto = $this->monto + $precio;
+			$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
 		}
 
 
@@ -126,7 +123,7 @@
 		{
 			//Obtiene los pedidos, el precio y la cantidad
 			$this->datos['pedidos'] = Work::execQuery(
-				"SELECT m.nombreMenu, m.precio, m.idMenu
+				"SELECT m.nombreMenu, m.precio, m.idMenu, pm.cantidad
 				FROM Menus as m
 				INNER JOIN PedidosMenus as pm
 				ON m.idMenu = pm.Menus_idMenu
@@ -141,7 +138,7 @@
 		private function getPedidosPizzas( &$mesaElegida )
 		{
 			$datos['pedidos'] = Work::execQuery(
-				"SELECT p.nombrePizza, p.precio, p.idPizza
+				"SELECT p.nombrePizza, p.precio, p.idPizza, pp.cantidad
 				FROM Pizzas as p
 				INNER JOIN PedidosPizzas as pp
 				ON p.idPizza = pp.Pizzas_idPizza
@@ -160,7 +157,7 @@
 		private function getPedidosBebidas( &$mesaElegida )
 		{
 			$datos['pedidos'] = Work::execQuery(
-				"SELECT b.nombreBebida, b.precio, b.idBebida
+				"SELECT b.nombreBebida, b.precio, b.idBebida, pb.cantidad
 				FROM Bebidas as b
 				INNER JOIN PedidosBebidas as pb
 				ON b.idBebida = pb.Bebidas_idBebida

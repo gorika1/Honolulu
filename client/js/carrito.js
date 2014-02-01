@@ -3,9 +3,10 @@ var total = 0; //almacena el monto total del pedido
 
 //***********************************************************************************
 //Añade el pedido al carro de compras
-function addCart( food, price, id, type )
+function addCart( food, price, id, amount, type )
 {
-	if( writePedido( id, food, price, type ) )
+	price = parseInt( price ) * parseInt( amount );
+	if( writePedido( id, food, price, amount, type ) )
 	{
 		total = total + parseInt( price );
 		writeMontoTotal( total );
@@ -31,7 +32,7 @@ function getPedidos(mesa)
 			for( i in data.pedidos ){
 				writePedido( data.pedidos[i].idMenu || data.pedidos[i].idPizza || data.pedidos[i].idBebida, 
 					data.pedidos[i].nombreMenu || data.pedidos[i].nombrePizza || data.pedidos[i].nombreBebida, 
-					data.pedidos[i].precio, data.pedidos[i].tipo, true );
+					data.pedidos[i].precio, data.pedidos[i].cantidad, data.pedidos[i].tipo, true );
 			}
 			writeMontoTotal( data.monto );
 
@@ -66,8 +67,7 @@ function saveCart(mesa)
 			alert( 'Ha ocurrido un error' );
 		},
 		success:function(data){
-			$('#resumen .food-order, #resumen .food-order-price' ).removeClass('pendiente');
-			$('#resumen .food-order, #resumen .food-order-price' ).removeClass('enviado');
+			$('#resumen .food-order, #resumen .food-order-price, #resumen .food-order-amount' ).removeClass('pendiente');
 		},
 		ifModified: false,
 		processData: true,
@@ -106,24 +106,24 @@ function getCart()
 	for( i = 0; i < cantidad; i++ )
 	{
 		var id = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('id-add');//Obtiene el id de los pedidos pendientes
-		var type = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('type');//Obtiene el id de los pedidos pendientes
-		oPedidos[i] = { 'id':id, 'type': type };
+		var type = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('type');//Obtiene el type de los pedidos pendientes
+		var amount = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('amount');
+
+		oPedidos[i] = { 'id':id, 'type': type, 'amount': amount };
 	}
-		
-	monto = $("#monto").text();
-	monto = monto.replace( ' ', '' );
 	
 	return oPedidos;
 }//end getPedidos
 
 //**************************************************************************
 
-function writePedido( id, food, precio, type, got )
+function writePedido( id, food, precio, cantidad, type, got )
 {
 	//Si fue obtenido desde la base de datos (es decir, ya se habia enviado)
 	if( got )
 		$('#resumen').append(
-			'<span class="food-order enviado" id-add=\"' + id + '\" type=\"' + type + '\">' + food + '</span>' +
+			'<span class="food-order-amount enviado" >' + cantidad + '</span>' +
+			'<span class="food-order enviado" id-add=\"' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
 			'<span class="food-order-price enviado">' + precio + '</span>'
 		);
 	else {
@@ -132,7 +132,8 @@ function writePedido( id, food, precio, type, got )
 			type != $('.food-order[id-add=' + id + '][type=' + type + ']').attr('type' ) )	
 		{			
 			$('#resumen').append(
-				'<span class="food-order pendiente" id-add=\"' + id + '\" type=\"' + type + '\">' + food + '</span>' +
+				'<span class="food-order-amount pendiente" >' + cantidad + '</span>' +
+				'<span class="food-order pendiente" id-add=\"' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
 				'<span class="food-order-price pendiente">' + precio + '</span>'
 			);
 

@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `honolulu-db`
 --
-CREATE DATABASE IF NOT EXISTS `honolulu-db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `honolulu-db`;
 
 -- --------------------------------------------------------
 
