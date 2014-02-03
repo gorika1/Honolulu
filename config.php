@@ -7,7 +7,8 @@
 			'FOOTER' 	=> 'footer',
 			'Extras'	=> array(
 				'BAR' 			=> 'bar',
-				'CATEGORIAS'	=> 'categorias'
+				'CATEGORIAS'	=> 'categorias',
+				'DIALOG'		=> 'dialog'
 			),
 		),
 

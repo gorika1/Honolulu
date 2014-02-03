@@ -110,15 +110,16 @@ function cantidad() {
 	});
 	
 	$('.amount').blur(function(){
-		$(this).attr('value', $(this).val());
+		$(this).attr( 'value', $(this).val());
+		if( $(this).attr( 'value' ) == '' ) {
+			$(this).attr( 'value', 1 );
+			$(this).val( 1 );
+		}
 	});
 
 	$(".amount").keydown( function(event) {
 		// Allow: backspace, delete
 	    if ( $.inArray( event.keyCode, [8] ) !== -1 ){
-	    	if( $(this).val() <= 9 )
-	    		event.preventDefault();
-	    	
 	    	return; 
 	    }
 	       	   	

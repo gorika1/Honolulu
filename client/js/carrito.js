@@ -120,45 +120,91 @@ function getCart()
 function writePedido( id, food, precio, cantidad, type, got )
 {
 	//Si fue obtenido desde la base de datos (es decir, ya se habia enviado)
-	if( got )
+	if( got ) 
+	{
 		$('#resumen').append(
 			'<span class="food-order-amount enviado" >' + cantidad + '</span>' +
-			'<span class="food-order enviado" id-add=\"' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
+			'<span class="food-order enviado" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
 			'<span class="food-order-price enviado">' + precio + '</span>'
 		);
-	else {
+		writeOptions( id, type, true );
+	}
+	else 
+	{
 		//Si aun no se agrego el elemento seleccionado
 		if( id != $('.food-order[id-add=' + id + '][type=' + type + ']').attr('id-add') ||
 			type != $('.food-order[id-add=' + id + '][type=' + type + ']').attr('type' ) )	
 		{			
 			$('#resumen').append(
-				'<span class="food-order-amount pendiente" >' + cantidad + '</span>' +
-				'<span class="food-order pendiente" id-add=\"' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
-				'<span class="food-order-price pendiente">' + precio + '</span>'
+				'<div for="' + id + type + '" >' +
+					'<span class="food-order-amount pendiente" >' + cantidad + '</span>' +
+					'<span class="food-order pendiente" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
+					'<span class="food-order-price pendiente">' + precio + '</span>' +
+				'</div>'
 			);
+
+			writeOptions( id, type );
 
 			return true;
 		}
 		else
 			alert( 'Este alimento ya esta entre los pedidos' );
-	}//end else externo
+	}//end if...else externo
 
 	return false;
 
 }//end writePedido
 
-//*****************************************************************************
+//*******************************************************************************************
+
+
+function writeOptions( id, type, got )
+{
+	if( got )
+	{
+		$('#resumen').append(
+			'<div class="food-order-option-container enviado" for="' + id + type + '">' +
+				'<span class="food-order-option edit"><span class="glyphicon glyphicon-edit"></span></span>' +
+				'<span class="food-order-option remove enviado"><span class="glyphicon glyphicon-remove"></span></span>' +			
+			'</div><span for="' + id + type + '" class="separator"></span>'
+		);
+	}
+	else
+	{
+		$('#resumen').append(
+			'<div class="food-order-option-container" for="' + id + type + '">' +
+				'<span class="food-order-option edit"><span class="glyphicon glyphicon-edit"></span></span>' +
+				'<span class="food-order-option remove"><span class="glyphicon glyphicon-remove"></span></span>' +			
+			'</div><span for="' + id + type + '" class="separator"></span>'
+		);
+	}
+	
+	
+}
+
+
+//*******************************************************************************************
 
 function writeMontoTotal( monto ) {
 	//Borra el contenido del monto total
 	$("#monto-total").text('');
 
 	//Si hay un monto, entonces lo muestra
-	if( monto != null )
+	if( monto != null && monto > 0 )
 		$('#monto-total').html(
 			'<span>Total: </span>' +
 			'<span id="monto">' + monto + '</span>'
 		);
+}//end writeMontoTotal
+
+//**********************************************************************************
+
+function removeOrder( elementFor ) {
+	precio = $('div[for="' + elementFor + '"] .food-order-price').text();//get the price for discount of total
+	total = total - precio;
+	writeMontoTotal( total );
+	//Remove retated to option remove clicked
+	$('*[for="' + elementFor + '"]').remove();
 }
 
 
@@ -174,3 +220,24 @@ function scrollResumen(){
 	});
 }//end scrollResumen
 
+//***************************************************************
+function confirmCustom( message, deleteOrder ) {
+	if( deleteOrder )// if it is for delete an order
+	{
+    	$('#confirm-delete').bPopup({
+    		opacity: .9,
+    	});
+
+    	$( '#confirm-delete strong' ).text(message);
+    }
+    else // if it is for send the order
+    {
+    	$('#confirm-send').bPopup({
+    		opacity: .9,
+    	});
+
+    	$( '#confirm-send strong' ).text(message);
+    }	
+
+    
+}

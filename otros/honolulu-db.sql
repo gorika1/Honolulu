@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 01-02-2014 a las 00:51:34
+-- Tiempo de generación: 02-02-2014 a las 00:10:08
 -- Versión del servidor: 5.6.12
 -- Versión de PHP: 5.5.1
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `honolulu-db`
 --
+CREATE DATABASE IF NOT EXISTS `honolulu-db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `honolulu-db`;
 
 -- --------------------------------------------------------
 
@@ -174,7 +176,6 @@ CREATE TABLE IF NOT EXISTS `Menus` (
 
 INSERT INTO `Menus` (`idMenu`, `nombreMenu`, `precio`, `TiposMenus_idTipoMenu`) VALUES
 (1, 'Prueba Salads 1', 20000, 1),
-(2, 'Prueba Salads 2', 30000, 1),
 (3, 'Prueba Appetizers 1', 15000, 2),
 (4, 'Prueba Appetizers 2', 20000, 2);
 
@@ -254,8 +255,8 @@ CREATE TABLE IF NOT EXISTS `Pizzas` (
 --
 
 INSERT INTO `Pizzas` (`idPizza`, `nombrePizza`, `precio`) VALUES
-(1, 'Pizza de Prueba 1', 30000),
-(2, 'Pizza de Prueba 2', 70000);
+(1, 'Pizza de prueba 1', 20000),
+(2, 'Pizza de prueba 2', 15000);
 
 -- --------------------------------------------------------
 

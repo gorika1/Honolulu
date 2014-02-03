@@ -36,17 +36,51 @@ $(document).on( 'ready', function(){
 	});
 
 
-	//Controla la presion del boton para enviar el pedido
-	$( '#enviar img' ).on( 'click', function() {
-		if( confirm( 'Quieres enviar el pedido?' ) ) 
+	//Controla el borrado de uno de los pedidos
+	var action; // if will be for delete an order or send the orders
+	var elementFor; // declare out because it will be necessary for the confirm
+	$( '#resumen' ).on( 'click', '.food-order-option .glyphicon-remove', function(){
+		if( ! $(this).parent().hasClass('enviado') )
 		{
-			var mesa = $('#popup').text();
-			saveCart( mesa );
-		}		
+			action = 'remove';
+			confirmCustom( '¿Está seguro de que quiere eliminar este pedido?', true );
+			elementFor = $(this).parent().parent().attr('for');//get the attribute "for" for remove divs that have this attribute
+		}//end if
 	});
 
 
-	//********************************** POPUP **********************************************
+	//Controla la presion del boton para enviar el pedido
+	$( '#enviar img' ).on( 'click', function() {
+		action = 'send'
+		confirmCustom('¿Quieres realizar este pedido?', false );
+	});
+
+
+	//************************** POPUP REMOVE ORDER AND SEND ORDERS *****************************
+
+
+	$( '.close-bpopup' ).on('click', function(){
+		answer = $(this).attr('response'); // answer of confirmation
+		if( action == 'remove' ) 
+		{
+			$('#confirm-delete').bPopup().close();
+			if( answer == "true" )
+				removeOrder( elementFor );	
+		}
+		else if( action == 'send' )
+		{
+			$('#confirm-send').bPopup().close();
+			if( answer == 'true' ) 
+			{
+				var mesa = $('#popup').text();
+				saveCart( mesa );
+			}
+		}		
+
+		
+	});
+
+	//********************************** POPUP SELECT TABLE ***************************************
 
 	//Controla el popup para la eleccion de la mesa
 	$('#popup').on( 'click', function(){
