@@ -44,7 +44,7 @@ $(document).on( 'ready', function(){
 		{
 			action = 'remove';
 			confirmCustom( '¿Está seguro de que quiere eliminar este pedido?', true );
-			elementFor = $(this).parent().parent().attr('for');//get the attribute "for" for remove divs that have this attribute
+			elementFor = $(this).parent().parent().parent().attr('for');//get the attribute "for" for remove divs that have this attribute
 		}//end if
 	});
 
@@ -63,6 +63,7 @@ $(document).on( 'ready', function(){
 		answer = $(this).attr('response'); // answer of confirmation
 		if( action == 'remove' ) 
 		{
+			console.log(elementFor);
 			$('#confirm-delete').bPopup().close();
 			if( answer == "true" )
 				removeOrder( elementFor );	

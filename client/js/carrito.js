@@ -164,18 +164,30 @@ function writeOptions( id, type, got )
 	{
 		$('#resumen').append(
 			'<div class="food-order-option-container enviado" for="' + id + type + '">' +
-				'<span class="food-order-option edit"><span class="glyphicon glyphicon-edit"></span></span>' +
-				'<span class="food-order-option remove enviado"><span class="glyphicon glyphicon-remove"></span></span>' +			
-			'</div><span for="' + id + type + '" class="separator"></span>'
-		);
+				'<div class="row">' +
+					'<div class="col-md-6 food-order-option edit">' +
+						'<span class=" glyphicon glyphicon-edit"></span>' +
+					'</div>' +
+					'<div class="col-md-6 food-order-option remove enviado">' +
+						'<span class="glyphicon glyphicon-remove"></span>' +
+					'</div>' +
+				'</div>'+
+			'</div>'
+		);		
 	}
 	else
 	{
 		$('#resumen').append(
 			'<div class="food-order-option-container" for="' + id + type + '">' +
-				'<span class="food-order-option edit"><span class="glyphicon glyphicon-edit"></span></span>' +
-				'<span class="food-order-option remove"><span class="glyphicon glyphicon-remove"></span></span>' +			
-			'</div><span for="' + id + type + '" class="separator"></span>'
+				'<div class="row">' +
+					'<div class="col-md-6 food-order-option edit">' +
+						'<span class=" glyphicon glyphicon-edit"></span>' +
+					'</div>' +
+					'<div class="col-md-6 food-order-option remove">' +
+						'<span class="glyphicon glyphicon-remove"></span>' +
+					'</div>' +
+				'</div>'+
+			'</div>'
 		);
 	}
 	
