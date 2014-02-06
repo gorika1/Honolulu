@@ -204,6 +204,11 @@ div.bg-rect > div.active {
 	width: 70%;
 }
 
+#resumen .food-order .missing {
+	color: #F00;
+	margin-left: .5em;
+}
+
 #resumen .food-order-price {
 	border: 1px solid #CCC;
 	border-bottom: none;
@@ -224,9 +229,19 @@ div.bg-rect > div.active {
 	width: 98%;
 }
 
-#resumen .food-order-option.edit {
+#resumen .food-order-option.edit,
+#resumen .food-order-option.plus {
 	color: #000;
 	padding-left: 25px;
+}
+
+#resumen .food-order-option.plus span {
+	background: #212121;
+	color: #FFF;
+	display: inline-block;
+	font-size: 20px;
+	padding: .2em;
+	width: 26px;
 }
 
 #resumen .food-order-option.remove {

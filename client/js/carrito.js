@@ -38,6 +38,8 @@ function getPedidos(mesa)
 
 			if( data.monto != null )
 				total = parseInt( data.monto );
+
+			scrollResumen();
 		},
 		ifModified: false,
 		processData: true,
@@ -49,12 +51,14 @@ function getPedidos(mesa)
 
 //***********************************************************************************
 
-
+var oPedidos = {};//almacena todos los idMenu;
 function saveCart(mesa)
 {
-	var oPedidos = getCart();
+	getCart();
+	getCartForMissing();
 
 	oPedidos = encodeURI( JSON.stringify( oPedidos ) );
+	
 	//Obtiene el id de la mesa seleccionada
 	idMesa = mesa.replace( 'Mesa ', '' );
 
@@ -68,6 +72,17 @@ function saveCart(mesa)
 		},
 		success:function(data){
 			$('#resumen .food-order, #resumen .food-order-price, #resumen .food-order-amount' ).removeClass('pendiente');
+			$('span.missing.amount').text('');
+			$('glyphicon-remove.missing').removeClass('missing');
+			var optionContainer = $('.food-order-option.edit');
+			optionContainer.addClass('plus');
+			optionContainer.removeClass('edit');
+			optionContainer.children('.glyphicon').removeClass('glyphicon-edit');
+			optionContainer.children('.glyphicon').addClass('glyphicon-plus');
+			optionContainer = $('.food-order-option.remove');
+			optionContainer.addClass('enviado');
+			optionContainer.css('color', '#D7D7D7');
+			oPedidos = {};
 		},
 		ifModified: false,
 		processData: true,
@@ -100,7 +115,6 @@ function changeMesa(mesa)
 
 function getCart()
 {
-	var oPedidos = {};//almacena todos los idMenu
 	var cantidad = $('#resumen .food-order.pendiente').length;//Cantidad de pedidos pendientes
 
 	for( i = 0; i < cantidad; i++ )
@@ -112,8 +126,23 @@ function getCart()
 		oPedidos[i] = { 'id':id, 'type': type, 'amount': amount };
 	}
 	
-	return oPedidos;
 }//end getPedidos
+
+//**************************************************************************
+
+function getCartForMissing()
+{
+	var cantidad = $('#resumen .food-order.missing').length;
+	console.log(cantidad);
+	for( i = 0; i < cantidad; i++ )
+	{
+		var id = $('#resumen .food-order.missing:eq(' + i + ')' ).attr('id-add');//Obtiene el id de los pedidos pendientes
+		var type = $('#resumen .food-order.missing:eq(' + i + ')' ).attr('type');//Obtiene el type de los pedidos pendientes
+		var amount = $('#resumen .food-order.missing:eq(' + i + ')' ).attr('amount');
+
+		oPedidos[i] = { 'id':id, 'type': type, 'amount': amount };
+	}
+}
 
 //**************************************************************************
 
@@ -123,9 +152,13 @@ function writePedido( id, food, precio, cantidad, type, got )
 	if( got ) 
 	{
 		$('#resumen').append(
-			'<span class="food-order-amount enviado" >' + cantidad + '</span>' +
-			'<span class="food-order enviado" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
-			'<span class="food-order-price enviado">' + precio + '</span>'
+			'<div class="food-order-container" for="' + id + type + '">' +
+				'<span class="food-order-amount enviado" >' + cantidad + '</span>' +
+				'<span class="food-order enviado" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + 
+					'<span class="missing amount"></span>' +
+				'</span>' +
+				'<span class="food-order-price enviado">' + precio + '</span>' +
+			'</div>'
 		);
 		writeOptions( id, type, true );
 	}
@@ -136,9 +169,11 @@ function writePedido( id, food, precio, cantidad, type, got )
 			type != $('.food-order[id-add=' + id + '][type=' + type + ']').attr('type' ) )	
 		{			
 			$('#resumen').append(
-				'<div for="' + id + type + '" >' +
+				'<div class="food-order-container" for="' + id + type + '">' +
 					'<span class="food-order-amount pendiente" >' + cantidad + '</span>' +
-					'<span class="food-order pendiente" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + '</span>' +
+					'<span class="food-order pendiente" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + 
+						'<span class="missing amount"></span>' +
+					'</span>' +
 					'<span class="food-order-price pendiente">' + precio + '</span>' +
 				'</div>'
 			);
@@ -163,16 +198,17 @@ function writeOptions( id, type, got )
 	if( got )
 	{
 		$('#resumen').append(
-			'<div class="food-order-option-container enviado" for="' + id + type + '">' +
+			'<div class="food-order-option-container enviado">' +
 				'<div class="row">' +
-					'<div class="col-md-6 food-order-option edit">' +
-						'<span class=" glyphicon glyphicon-edit"></span>' +
+					'<div class="col-md-6 food-order-option plus">' +
+						'<span class="glyphicon glyphicon-plus" for="' + id + type + '"></span>' +
 					'</div>' +
 					'<div class="col-md-6 food-order-option remove enviado">' +
-						'<span class="glyphicon glyphicon-remove"></span>' +
+						'<span class="glyphicon glyphicon-remove" for="' + id + type + '"></span>' +
 					'</div>' +
-				'</div>'+
-			'</div>'
+				'</div>' +
+			'</div>' +
+			'<span class="separator"></span>'
 		);		
 	}
 	else
@@ -181,13 +217,14 @@ function writeOptions( id, type, got )
 			'<div class="food-order-option-container" for="' + id + type + '">' +
 				'<div class="row">' +
 					'<div class="col-md-6 food-order-option edit">' +
-						'<span class=" glyphicon glyphicon-edit"></span>' +
+						'<span class=" glyphicon glyphicon-edit" for="' + id + type + '"></span>' +
 					'</div>' +
 					'<div class="col-md-6 food-order-option remove">' +
-						'<span class="glyphicon glyphicon-remove"></span>' +
+						'<span class="glyphicon glyphicon-remove" for="' + id + type + '"></span>' +
 					'</div>' +
 				'</div>'+
-			'</div>'
+			'</div>' +
+			'<span class="separator" for="' + id + type + '"></span>'
 		);
 	}
 	
@@ -224,6 +261,15 @@ function removeOrder( elementFor ) {
 
 function scrollResumen(){
 	$('#resumen').mCustomScrollbar("destroy");	
+	$("#resumen").mCustomScrollbar({
+		theme: 'dark',
+		scrollButtons: {
+			enable: true				
+		},			
+	});
+}//end scrollResumen
+
+function scrollResumen1(){
 	$("#resumen").mCustomScrollbar({
 		theme: 'dark',
 		scrollButtons: {

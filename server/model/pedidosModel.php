@@ -44,13 +44,32 @@
 
 		private function setPedidoMenu( &$food )
 		{
-			Work::setRegister( 'PedidosMenus', 
-				'Pedidos_nroMesa, Menus_idMenu, cantidad', 
-				$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
-
 			$precio = Work::getRegister( 'Menus', 'precio', 'idMenu = '. $food[ 'id' ] );
 			$precio = $precio[ 'precio' ];
-			$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
+
+			if( Work::existRegister( 'PedidosMenus', 'Pedidos_nroMesa = ' . $this->mesa . ' AND Menus_idMenu= ' . $food['id'] ) )
+			{
+				$currentAmount = Work::getRegister( 'PedidosMenus' , 'cantidad', 
+					'Pedidos_nroMesa=' . $this->mesa . ' AND Menus_idMenu = ' . $food['id'] );
+
+				$currentAmount = $currentAmount[ 'cantidad' ];
+				$added = $food[ 'amount' ] - $currentAmount;
+
+				Work::updateRegister( 'PedidosMenus', 'cantidad = ' . $food[ 'amount' ], 
+					'Pedidos_nroMesa = '. $this->mesa . ' AND Menus_idMenu = ' . $food['id'] );
+
+				$this->monto = $this->monto + ( $precio * $added );
+			}				
+			else
+			{
+				Work::setRegister( 'PedidosMenus', 
+					'Pedidos_nroMesa, Menus_idMenu, cantidad', 
+					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
+
+				$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
+			}
+
+			
 		}
 
 
@@ -58,13 +77,31 @@
 
 		private function setPedidoPizza( &$food )
 		{
-			Work::setRegister( 'PedidosPizzas', 
-				'Pedidos_nroMesa, Pizzas_idPizza, cantidad', 
-				$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
-
 			$precio = Work::getRegister( 'Pizzas', 'precio', 'idPizza = '. $food [ 'id' ]  );
 			$precio = $precio[ 'precio' ];
-			$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
+
+			if( Work::existRegister( 'PedidosPizzas', 'Pedidos_nroMesa = ' . $this->mesa .  ' AND Pizzas_idPizza= ' . $food['id'] ) )
+			{
+				$currentAmount = Work::getRegister( 'PedidosPizzas' , 'cantidad', 
+					'Pedidos_nroMesa=' . $this->mesa . ' AND Pizzas_idPizza = ' . $food['id'] );
+
+				$currentAmount = $currentAmount[ 'cantidad' ];
+				$added = $food[ 'amount' ] - $currentAmount;
+
+				Work::updateRegister( 'PedidosPizzas', 'cantidad = ' . $food[ 'amount' ], 
+					'Pedidos_nroMesa = '. $this->mesa . ' AND Pizzas_idPizza = ' . $food['id'] );
+
+				$this->monto = $this->monto + ( $precio * $added );
+			}
+				
+			else
+			{
+				Work::setRegister( 'PedidosPizzas',
+					'Pedidos_nroMesa, Pizzas_idPizza, cantidad', 
+					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
+
+				$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
+			}
 		}
 
 
@@ -73,13 +110,31 @@
 
 		private function setPedidoBebida( &$food )
 		{
-			Work::setRegister( 'PedidosBebidas', 
-				'Pedidos_nroMesa, Bebidas_idBebida, cantidad', 
-				$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
-
 			$precio = Work::getRegister( 'Bebidas', 'precio', 'idBebida = '. $food [ 'id' ]  );
 			$precio = $precio[ 'precio' ];
-			$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
+
+			if( Work::existRegister( 'PedidosBebidas', 'Pedidos_nroMesa = ' . $this->mesa .  ' AND Bebidas_idBebida= ' . $food['id'] ) )
+			{
+				$currentAmount = Work::getRegister( 'PedidosBebidas' , 'cantidad', 
+					'Pedidos_nroMesa=' . $this->mesa . ' AND Bebidas_idBebida = ' . $food['id'] );
+
+				$currentAmount = $currentAmount[ 'cantidad' ];
+				$added = $food[ 'amount' ] - $currentAmount;
+
+				Work::updateRegister( 'PedidosBebidas', 'cantidad = ' . $food[ 'amount' ], 
+					'Pedidos_nroMesa = '. $this->mesa . ' AND Bebidas_idBebida = ' . $food['id'] );
+
+				$this->monto = $this->monto + ( $precio * $added );
+			}
+				
+			else
+			{
+				Work::setRegister( 'PedidosBebidas', 
+					'Pedidos_nroMesa, Bebidas_idBebida, cantidad', 
+					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
+
+				$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
+			}
 		}
 
 
@@ -130,7 +185,11 @@
 				AND pm.Pedidos_nroMesa = $mesaElegida", true );
 
 			for( $i = 0; $i < sizeof( $this->datos['pedidos'] ); $i++ )
+			{
+				if( $this->datos['pedidos'][ $i ][ 'cantidad' ] > 1 )
+					$this->datos['pedidos'][$i]['precio'] = $this->datos['pedidos'][ $i ][ 'precio' ] * $this->datos['pedidos'][ $i ][ 'cantidad' ];
 				$this->datos['pedidos'][ $i ][ 'tipo' ] = 1;
+			}
 		}//end getPedidosMenus
 
 		//************************************************************************************
@@ -145,7 +204,12 @@
 				AND pp.Pedidos_nroMesa = $mesaElegida", true );
 
 			for( $i = 0; $i < sizeof( $datos['pedidos'] ); $i++ )
+			{
+				if( $datos['pedidos'][ $i ][ 'cantidad' ] > 1 )
+					$datos['pedidos'][$i]['precio'] = $datos['pedidos'][ $i ][ 'precio' ] * $datos['pedidos'][ $i ][ 'cantidad' ];
 				$datos['pedidos'][ $i ][ 'tipo' ] = 2;
+			}
+				
 
 			$array = array_merge( $this->datos[ 'pedidos' ], $datos['pedidos'] );
 
@@ -164,7 +228,11 @@
 				AND pb.Pedidos_nroMesa = $mesaElegida", true );
 
 			for( $i = 0; $i < sizeof( $datos['pedidos'] ); $i++ )
+			{
+				if( $datos['pedidos'][ $i ][ 'cantidad' ] > 1 )
+					$datos['pedidos'][$i]['precio'] = $datos['pedidos'][ $i ][ 'precio' ] * $datos['pedidos'][ $i ][ 'cantidad' ];
 				$datos['pedidos'][ $i ][ 'tipo' ] = 3;
+			}
 
 			$array = array_merge( $this->datos[ 'pedidos' ], $datos['pedidos'] );
 
