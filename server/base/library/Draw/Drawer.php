@@ -132,7 +132,7 @@
 			$this->drawLocal();//Traduce los vinculos a archivos locales en el servidor
 
 			//Imprime la página traducida
-			echo $this->getPage();		
+			echo $this->getPage();	
 
 		}//end draw
 

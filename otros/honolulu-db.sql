@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-02-2014 a las 00:10:08
+-- Tiempo de generación: 06-02-2014 a las 14:57:34
 -- Versión del servidor: 5.6.12
 -- Versión de PHP: 5.5.1
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `honolulu-db`
 --
-CREATE DATABASE IF NOT EXISTS `honolulu-db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `honolulu-db`;
 
 -- --------------------------------------------------------
 
@@ -201,6 +199,7 @@ CREATE TABLE IF NOT EXISTS `PedidosBebidas` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Bebidas_idBebida` int(11) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
+  `entregado` int(11) DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Bebidas_idBebida`),
   KEY `fk_Pedidos_has_Bebidas_Bebidas1_idx` (`Bebidas_idBebida`),
   KEY `fk_Pedidos_has_Bebidas_Pedidos1_idx` (`Pedidos_nroMesa`)
@@ -216,6 +215,7 @@ CREATE TABLE IF NOT EXISTS `PedidosMenus` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Menus_idMenu` int(11) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
+  `entregado` int(11) DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Menus_idMenu`),
   KEY `fk_Pedidos_has_Menus_Menus1_idx` (`Menus_idMenu`),
   KEY `fk_Pedidos_has_Menus_Pedidos_idx` (`Pedidos_nroMesa`)
@@ -231,6 +231,7 @@ CREATE TABLE IF NOT EXISTS `PedidosPizzas` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Pizzas_idPizza` int(11) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
+  `entregado` int(11) DEFAULT NULL,
   `idCombinado` int(11) DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Pizzas_idPizza`),
   KEY `fk_Pedidos_has_Pizzas_Pizzas1_idx` (`Pizzas_idPizza`),

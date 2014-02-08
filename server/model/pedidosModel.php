@@ -17,7 +17,7 @@
 				$idFoods = json_decode( urldecode( $datos['data'] ), true );
 
 				$monto = 0;//monto de la compra
-				print_r($idFoods);
+
 				foreach ( $idFoods as $food ) 
 				{
 					if( $food[ 'type' ] == 1 ) 
@@ -55,7 +55,7 @@
 				$currentAmount = $currentAmount[ 'cantidad' ];
 				$added = $food[ 'amount' ] - $currentAmount;
 
-				Work::updateRegister( 'PedidosMenus', 'cantidad = ' . $food[ 'amount' ], 
+				Work::updateRegister( 'PedidosMenus', 'cantidad = ' . $food[ 'amount' ] . ', fecha = curdate(), hora = curtime()', 
 					'Pedidos_nroMesa = '. $this->mesa . ' AND Menus_idMenu = ' . $food['id'] );
 
 				$this->monto = $this->monto + ( $precio * $added );
@@ -63,17 +63,16 @@
 			else
 			{
 				Work::setRegister( 'PedidosMenus', 
-					'Pedidos_nroMesa, Menus_idMenu, cantidad', 
-					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
+					'Pedidos_nroMesa, Menus_idMenu, cantidad, fecha, hora', 
+					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] . ', curdate(), curtime()' );
 
 				$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
 			}
-
 			
 		}
 
 
-		//***********************************************************************************************
+		//*******************************************************************************************************************
 
 		private function setPedidoPizza( &$food )
 		{
@@ -88,7 +87,7 @@
 				$currentAmount = $currentAmount[ 'cantidad' ];
 				$added = $food[ 'amount' ] - $currentAmount;
 
-				Work::updateRegister( 'PedidosPizzas', 'cantidad = ' . $food[ 'amount' ], 
+				Work::updateRegister( 'PedidosPizzas', 'cantidad = ' . $food[ 'amount' ] . ', fecha = curdate(), hora = curtime()', 
 					'Pedidos_nroMesa = '. $this->mesa . ' AND Pizzas_idPizza = ' . $food['id'] );
 
 				$this->monto = $this->monto + ( $precio * $added );
@@ -97,15 +96,15 @@
 			else
 			{
 				Work::setRegister( 'PedidosPizzas',
-					'Pedidos_nroMesa, Pizzas_idPizza, cantidad', 
-					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
+					'Pedidos_nroMesa, Pizzas_idPizza, cantidad, fecha, hora', 
+					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] . ', curdate(), curtime()' );
 
 				$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
 			}
 		}
 
 
-		//***********************************************************************************************
+		//*************************************************************************************************************
 
 
 		private function setPedidoBebida( &$food )
@@ -121,7 +120,7 @@
 				$currentAmount = $currentAmount[ 'cantidad' ];
 				$added = $food[ 'amount' ] - $currentAmount;
 
-				Work::updateRegister( 'PedidosBebidas', 'cantidad = ' . $food[ 'amount' ], 
+				Work::updateRegister( 'PedidosBebidas', 'cantidad = ' . $food[ 'amount' ] . ', fecha = curdate(), hora = curtime()', 
 					'Pedidos_nroMesa = '. $this->mesa . ' AND Bebidas_idBebida = ' . $food['id'] );
 
 				$this->monto = $this->monto + ( $precio * $added );
@@ -130,15 +129,17 @@
 			else
 			{
 				Work::setRegister( 'PedidosBebidas', 
-					'Pedidos_nroMesa, Bebidas_idBebida, cantidad', 
-					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] );
+					'Pedidos_nroMesa, Bebidas_idBebida, cantidad, fecha, hora', 
+					$this->mesa . ', ' . $food[ 'id' ] . ', ' . $food[ 'amount'] . ', curdate(), curtime()' );
 
 				$this->monto = $this->monto + ( $precio * $food[ 'amount' ] );
 			}
+
+			Work::viewQuery();
 		}
 
 
-		//***********************************************************************************************
+		//***************************************************************************************************************
 
 		private function setMontoPedido()
 		{
@@ -154,8 +155,7 @@
 		}
 
 		
-		//**********************************************************************************************
-
+		//***********************************************************************************************************
 
 		//Obtiene los pedidos actuales de la mesa elegida
 		public function getCartSelect( &$mesaElegida ) 

@@ -328,7 +328,7 @@ div.bg-rect > div.active {
 }
 
 .reveal-modal .close-reveal-modal {
-	top: 10px;
+	top: 0px;
 	right: 20px;
 	color: #000;
 	font-size: 28px;
@@ -353,4 +353,41 @@ div.bg-rect > div.active {
 #confirm-delete .panel-body div,
 #confirm-send .panel-body div {
 	text-align: right;
+}
+
+
+
+/*****************************************************************************************************
+******************************************* COCINA ***************************************************
+******************************************************************************************************/
+.container.cocina {
+	margin-top: 2em;
+}
+
+#pedidos .panel-title,
+#pedidos .panel-body,
+#pedidos .panel-footer {
+	font-weight: bold;	
+	text-align: center;
+}
+
+#pedidos .panel {
+	border: 1px solid #d25d37;
+}
+
+#pedidos .panel-heading {
+	background: #d25d37;
+	border-bottom: 1px solid #d25d37;
+	position: relative;
+}
+
+#pedidos .close-order {
+	font-size: 28px;
+	position: absolute;	
+	right: 0;
+	top: 0;
+}
+
+#pedidos .panel-body {
+	font-size: 16px;
 }

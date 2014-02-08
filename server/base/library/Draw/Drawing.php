@@ -43,7 +43,8 @@
 			if( isset( $this->list ) )
 				// Crea el fragmento HTML
 				$this->drawer->convertListToString( $this->list, $this->template, $this->principalList[ $listName ] );
-			
+			else //Si no existe los indices, posiblemente quiera ver como quedaria
+				$this->principalList[ $listName ] = $this->template;			
 
 			// Borra los valores de $this->list para recibir un nuevo conjunto de words a traducir
 			unset( $this->list );
@@ -53,7 +54,7 @@
 
 		public function drawPage( $title, $replaced = null, $extras = null )
 		{
-			//Clona los datos del objeto dictionary
+			//Clona los datos del objeto drawer
 			global $drawer;
 			$this->drawer = clone( $drawer );
 			
