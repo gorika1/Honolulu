@@ -10,7 +10,7 @@
 			$this->myCocina = new Cocina();
 		}
 
-		public function drawPedidos()
+		public function drawPedidos( $isAJAX = false )
 		{
 			$this->setList( 'pedidos' );
 
@@ -19,18 +19,24 @@
 			foreach ( $orders as $key => $value ) 
 				$aux[ $key ] = $value[ 'hora' ];
 
-			array_multisort( $aux, SORT_ASC, $orders );
-			
+			if( isset( $aux ) )
+				array_multisort( $aux, SORT_ASC, $orders );
+
 			foreach( $orders as $order )
 			{
 				$this->list[] = array(
-					'Table' => 'Mesa ' . $order[ 'Pedidos_nroMesa' ],
+					'Identificator' => $order[ 'identificator' ],
+					'Table' => $order[ 'Pedidos_nroMesa' ],
+					'Amount' => $order[ 'cantidad' ],
 					'Food' => $order[ 'foodName' ],
 					'Description' => '',
 					'Hour' => $order[ 'hora' ],
 				);
 			}
 
-			$this->draw( 'Pedidos' );
+			if( $isAJAX )
+				return $this->list;
+			else
+				$this->draw( 'Pedidos' );
 		}
 	}

@@ -364,6 +364,12 @@ div.bg-rect > div.active {
 	margin-top: 2em;
 }
 
+#pedidos.message {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+
 #pedidos .panel-title,
 #pedidos .panel-body,
 #pedidos .panel-footer {
@@ -390,4 +396,11 @@ div.bg-rect > div.active {
 
 #pedidos .panel-body {
 	font-size: 16px;
+}
+
+.food-amount-cocina {
+	color: #0C2F02;
+	display: block;
+	font-size: 22px;
+	margin-bottom: .5em;
 }

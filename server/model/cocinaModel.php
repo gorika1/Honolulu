@@ -7,11 +7,14 @@
 
 		public function getPedidos()
 		{
-			$this->orders = Work::getRegisters( 'PedidosMenus', '*', null, 'hora' );
+			$this->orders = Work::getRegisters( 'PedidosMenus', '*', 'cantidad > entregado', 'hora' );
 
-			for( $i = 0; $i < sizeof( $this->orders ); $i++ ) 
+			for( $i = 0; $i < sizeof( $this->orders ); $i++ )
 			{
 				$this->orders[ $i ][ 'foodName' ] = $this->getFoodById( $this->orders[ $i ][ 'Menus_idMenu' ], 1 );
+				$this->orders[ $i ][ 'identificator' ] = $this->orders[ $i ][ 'Pedidos_nroMesa' ] . $this->orders[ $i ][ 'Menus_idMenu' ] . 1;
+				$this->orders[ $i ][ 'cantidad' ] = $this->orders[ $i ][ 'cantidad' ] - $this->orders[ $i ][ 'entregado' ];
+				unset( $this->orders[ $i ][ 'Menus_idMenu' ] );
 			}
 
 			$this->getPizzas();
@@ -21,18 +24,62 @@
 			return $this->orders;
 		}//end getPedidos
 
+		//*************************************************************************************************
+
+		public function closePedido( &$data = array() )
+		{
+			$delivered = $this->getDelivered( $data );
+
+			$newDelivered = $delivered + $data[ 'amount' ];
+			
+			$this->setDelivered( $newDelivered, $data );
+
+		}
+
+		//**************************************************************************************************
+
+		private function getDelivered( &$data )
+		{
+			if( $data[ 'type' ] == 1)
+				$delivered = Work::getRegister( 'PedidosMenus', 'entregado',
+				'Pedidos_nroMesa = ' . $data[ 'mesa' ] . ' AND Menus_idMenu = ' . $data[ 'id' ] );
+			else
+				$delivered = Work::getRegister( 'PedidosPizzas', 'entregado',
+				'Pedidos_nroMesa = ' . $data[ 'mesa' ] . ' AND Pizzas_idPizza = ' . $data[ 'id' ] );
+
+			$delivered = $delivered[ 'entregado' ];
+
+			return $delivered;
+		}
+
+		//**************************************************************************************************
+
+		private function setDelivered( &$amount, &$data )
+		{
+			if( $data[ 'type' ] == 1 )
+				Work::updateRegister( 'PedidosMenus', 'entregado = ' . $amount,
+				'Pedidos_nroMesa = ' . $data[ 'mesa' ] . ' AND Menus_idMenu = '  . $data[ 'id' ] );
+			else
+				Work::updateRegister( 'PedidosPizzas', 'entregado = ' . $amount,
+				'Pedidos_nroMesa = ' . $data[ 'mesa' ] . ' AND Pizzas_idPizza = ' . $data[ 'id' ] );
+			Work::viewQuery();
+		}
+
 		//**************************************************************************************************
 
 		private function getPizzas()
 		{
-			$this->pizzas = Work::getRegisters( 'PedidosPizzas', '*', null, 'hora' );
+			$this->pizzas = Work::getRegisters( 'PedidosPizzas', '*', 'cantidad > entregado', 'hora' );
 
 			for( $i = 0; $i < sizeof( $this->pizzas ); $i++ )
 			{
 				$this->pizzas[ $i ][ 'foodName' ] = $this->getFoodById( $this->pizzas[ $i ][ 'Pizzas_idPizza' ], 2 );
+				$this->pizzas[ $i ][ 'identificator' ] = $this->pizzas[ $i ][ 'Pedidos_nroMesa' ] . $this->pizzas[ $i ][ 'Pizzas_idPizza' ] . 2;
+				unset( $this->pizzas[ $i ][ 'Pizzas_idPizza' ] );
 			}//end for
 
 		}//end getPizzas
+
 
 		//***************************************************************************************************
 
@@ -52,4 +99,4 @@
 			return $name;
 
 		}//end getMenuById
-	}
+	}//end Cocina

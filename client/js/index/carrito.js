@@ -112,18 +112,19 @@ function changeMesa(mesa)
 }
 
 //*************************************************************************
+var lastPos = -1;
 
 function getCart()
 {
 	var cantidad = $('#resumen .food-order.pendiente').length;//Cantidad de pedidos pendientes
-
+	
 	for( i = 0; i < cantidad; i++ )
 	{
 		var id = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('id-add');//Obtiene el id de los pedidos pendientes
 		var type = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('type');//Obtiene el type de los pedidos pendientes
 		var amount = $('#resumen .food-order.pendiente:eq(' + i + ')' ).attr('amount');
 
-		oPedidos[i] = { 'id':id, 'type': type, 'amount': amount };
+		oPedidos[ lastPos += 1 ] = { 'id':id, 'type': type, 'amount': amount };
 	}
 	
 }//end getPedidos
@@ -133,14 +134,13 @@ function getCart()
 function getCartForMissing()
 {
 	var cantidad = $('#resumen .food-order.missing').length;
-	console.log(cantidad);
 	for( i = 0; i < cantidad; i++ )
 	{
 		var id = $('#resumen .food-order.missing:eq(' + i + ')' ).attr('id-add');//Obtiene el id de los pedidos pendientes
 		var type = $('#resumen .food-order.missing:eq(' + i + ')' ).attr('type');//Obtiene el type de los pedidos pendientes
 		var amount = $('#resumen .food-order.missing:eq(' + i + ')' ).attr('amount');
 
-		oPedidos[i] = { 'id':id, 'type': type, 'amount': amount };
+		oPedidos[ lastPos += 1 ] = { 'id':id, 'type': type, 'amount': amount };
 	}
 }
 

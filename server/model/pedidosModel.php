@@ -18,6 +18,8 @@
 
 				$monto = 0;//monto de la compra
 
+				print_r( $idFoods );
+
 				foreach ( $idFoods as $food ) 
 				{
 					if( $food[ 'type' ] == 1 ) 

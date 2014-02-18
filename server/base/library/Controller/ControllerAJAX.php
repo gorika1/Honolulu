@@ -60,6 +60,7 @@
 
 		//************************************************************************************************
 
+		//Evalua si existe el minimo requisito de parametros para realizar la obtencion de datos
 		public function evaluateGet( $requestType )
 		{
 			if( $requestType == 'GET' )
@@ -73,6 +74,30 @@
 			else if( $requestType == 'POST')
 			{
 				if( ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] == true ) && isset( $_POST[ 'get' ] ) ) 
+				{
+					return true;
+				}//end if mas interno
+			}///end if interno
+
+			return false;
+		}
+
+		//*************************************************************************************************
+
+		//Evalua si existe el minimo requisito de parametros para realizar la eliminacion de datos
+		public function evaluateDelete( $requestType )
+		{
+			if( $requestType == 'GET' )
+			{
+				if( ( isset( $_GET[ 'ajax' ] ) && $_GET[ 'ajax' ] == true ) && isset( $_GET[ 'delete' ] ) &&  $_GET[ 'delete' ] == true ) 
+				{
+					return true;
+				}
+
+			}
+			else if( $requestType == 'POST')
+			{
+				if( ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] == true ) && isset( $_POST[ 'delete' ] ) && $_POST[ 'delete' ] == true ) 
 				{
 					return true;
 				}//end if mas interno

@@ -15,7 +15,7 @@
 			$lista = $this->myListar->getLista( $idTipoMenu );
 			$this->setList( 'menu' );
 
-			if( $idTipoMenu == 6 ) 
+			if( $idTipoMenu == 6 )
 			{
 				$this->pizzasList( $lista );
 			} 
@@ -33,9 +33,7 @@
 				$this->draw( 'Menus' );
 			else
 			{	
-				$list[ 'Menus' ] = $this->list;
-				$list[ 'DOM' ] = $this->template;
-				return $list;
+				return $this->list;
 			}
 		}
 
@@ -52,8 +50,7 @@
 						'Ingredientes' => $menu[ 'stringIngredientes' ],
 						'Precio' => $menu[ 'precio' ],
 						'Type' => 1,
-					);
-				
+					);				
 			}//end foreach
 		}//menusList
 
@@ -71,8 +68,7 @@
 						'Precio' => $pizza[ 'precio' ],
 						'Ingredientes' => $pizza[ 'stringIngredientes' ],
 						'Type' => 2					
-					);
-				
+					);				
 			}//end foreach
 		}//end pizzasList
 
@@ -93,7 +89,7 @@
 						'Type' => 3,
 					);
 			}//end foreach
-		}
+		} // end drinkList
 
 	}//end CursosView
 

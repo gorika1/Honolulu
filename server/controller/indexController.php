@@ -19,6 +19,8 @@
 				$obj = new Pedidos();
 				//Guarda los pedidos de la mesa
 				$obj->setPedido( $_POST );
+				//Create file to indicate that added new orders
+				fopen( 'server/exist.dat', 'a' );
 			}
 			//Si se quiere obtener los pedidos ya hechos por una mesa
 			else if( parent::evaluateGet( 'POST' ) )

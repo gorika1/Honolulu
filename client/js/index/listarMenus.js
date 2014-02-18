@@ -1,3 +1,5 @@
+var dom;
+
 function getLista( idTipoMenu )
 {
 	$.ajax({
@@ -19,9 +21,7 @@ function getLista( idTipoMenu )
 		ifModified: false,
 		processData: true,
 		success: function( data ) {
-
 			updateLista( data );
-
 		},
 		type: 'POST',
 		timeout: 3000
@@ -62,15 +62,15 @@ function updateLista( data )
 	
 	var html = '';
 	//Por cada menu con datos
-	for( i in data.Menus )
+	for( i in data )
 	{
-		dom = data.DOM;
-		dom = dom.replace( '{idMenu}', data.Menus[i].idMenu );
-		dom = dom.replace( "{Nombre}", data.Menus[i].Nombre );
-		dom = dom.replace( "{Nombre}", data.Menus[i].Nombre );
-		dom = dom.replace( "{Ingredientes}", data.Menus[i].Ingredientes );
-		dom = dom.replace( "{Precio}", data.Menus[i].Precio );
-		dom = dom.replace( "{Type}", data.Menus[i].Type )
+		resetDOM();
+		dom = dom.replace( '{idMenu}', data[i].idMenu );
+		dom = dom.replace( "{Nombre}", data[i].Nombre );
+		dom = dom.replace( "{Nombre}", data[i].Nombre );
+		dom = dom.replace( "{Ingredientes}", data[i].Ingredientes );
+		dom = dom.replace( "{Precio}", data[i].Precio );
+		dom = dom.replace( "{Type}", data[i].Type )
 		html = html + dom;
 	}
 
@@ -130,4 +130,36 @@ function cantidad() {
 	        }
 	    }    
 	});
+}
+
+//*****************************************************************************
+function resetDOM()
+{
+	dom = '<div class="panel panel-primary" id="food-container">' +
+		'<div class="panel-heading">' +
+			'<h3 class="panel-title">{Nombre}</h3>' +
+		'</div>' +
+		'<div class="panel-body">' +
+			'<img class="food-img" src="http://www.placehold.it/80x80" alt="">' +
+			'<div class="food-description">' +
+				'<span class="food-ingredientes">{Ingredientes}</span>' +
+			'</div>' +
+		'</div>' +
+		'<div class="price-add row">' +
+			'<div class="col-md-3 price">' +
+				'<strong><span class="food-price">Precio: {Precio}</span></strong>' +
+			'</div>' +
+			'<div class="col-md-5 food-amount">' +
+				'<form class="form-horizontal" role="form">' +
+				    '<div class="form-group">' +
+				        '<label class="col-md-5 control-label">Cantidad:</label>' +
+				        '<input class="amount" type="text" value="1" class="col-md-3 form-control">' +
+				    '</div>' +
+				'</form>' +
+			'</div>' +
+			'<div class="col-md-4">' +
+				'<div class="glyphicon glyphicon-plus food-add" id-add="{idMenu}" type="{Type}" food="{Nombre}"></div>' +
+			'</div>' +
+		'</div>' +
+	'</div>'
 }

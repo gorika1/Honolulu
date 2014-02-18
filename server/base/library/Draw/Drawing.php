@@ -42,9 +42,7 @@
 			//Si no hay indices en $this->list no hay nada que traducir
 			if( isset( $this->list ) )
 				// Crea el fragmento HTML
-				$this->drawer->convertListToString( $this->list, $this->template, $this->principalList[ $listName ] );
-			else //Si no existe los indices, posiblemente quiera ver como quedaria
-				$this->principalList[ $listName ] = $this->template;			
+				$this->drawer->convertListToString( $this->list, $this->template, $this->principalList[ $listName ] );		
 
 			// Borra los valores de $this->list para recibir un nuevo conjunto de words a traducir
 			unset( $this->list );
