@@ -40,7 +40,7 @@
 
 		private function getDelivered( &$data )
 		{
-			if( $data[ 'type' ] == 1)
+			if( $data[ 'type' ] == 1 )
 				$delivered = Work::getRegister( 'PedidosMenus', 'entregado',
 				'Pedidos_nroMesa = ' . $data[ 'mesa' ] . ' AND Menus_idMenu = ' . $data[ 'id' ] );
 			else
@@ -75,6 +75,7 @@
 			{
 				$this->pizzas[ $i ][ 'foodName' ] = $this->getFoodById( $this->pizzas[ $i ][ 'Pizzas_idPizza' ], 2 );
 				$this->pizzas[ $i ][ 'identificator' ] = $this->pizzas[ $i ][ 'Pedidos_nroMesa' ] . $this->pizzas[ $i ][ 'Pizzas_idPizza' ] . 2;
+				$this->pizzas[ $i ][ 'cantidad' ] = $this->pizzas[ $i ][ 'cantidad' ] - $this->pizzas[ $i ][ 'entregado' ];
 				unset( $this->pizzas[ $i ][ 'Pizzas_idPizza' ] );
 			}//end for
 

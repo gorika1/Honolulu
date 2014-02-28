@@ -136,6 +136,10 @@ div.bg-rect > div.active {
 	max-width: 100px;
 }
 
+.food-price {
+	margin-left: 10px;
+}
+
 .food-add {
 	display: inline-block;
 	font-size: 24px;
@@ -186,34 +190,28 @@ div.bg-rect > div.active {
 	height: 80%;
 }
 
-#resumen .food-order-amount {
+#resumen .food-order-container {
 	border: 1px solid #CCC;
-	border-bottom: none;
-	border-right: none;
-	border-top-left-radius: 10px;
+	border-radius: 10px;
+	margin-top: 4px;
+	padding-bottom: 4px;
+}
+
+#resumen .food-order-amount {
 	display: inline-block;
 	padding: 3px .5em 0  3px;
 	width: 8%;
 }
 
 #resumen .food-order {
-	border-top: 1px solid #CCC;
 	display: inline-block;
 	padding-top: 3px;
 	vertical-align: top;
 	width: 70%;
 }
 
-#resumen .food-order .missing {
-	color: #F00;
-	margin-left: .5em;
-}
 
 #resumen .food-order-price {
-	border: 1px solid #CCC;
-	border-bottom: none;
-	border-left: none;
-	border-top-right-radius: 10px;
 	display: inline-block;
 	padding-top: 3px;
 	text-align: right;
@@ -221,12 +219,9 @@ div.bg-rect > div.active {
 }
 
 #resumen .food-order-option-container {
-	border: 1px solid #CCC;
-	border-top: none;
-	border-radius: 0 0 10px 10px;
 	font-size: 28px;
 	margin-top: -2px;
-	width: 98%;
+	width: 100%;
 }
 
 #resumen .food-order-option.edit,
@@ -236,10 +231,12 @@ div.bg-rect > div.active {
 }
 
 #resumen .food-order-option.plus span {
+	display: block !important;
 	background: #212121;
 	color: #FFF;
 	display: inline-block;
 	font-size: 20px;
+	margin-top: 2px;
 	padding: .2em;
 	width: 26px;
 }
@@ -250,13 +247,17 @@ div.bg-rect > div.active {
 	text-align: right;
 }
 
-#resumen .enviado .food-order-option.remove {
-	color: #D7D7D7;
+#resumen .img-duplicate {
+	display: block;
+	text-align: center;
 }
 
-#resumen .separator {
-	display: block;
-	height: 4px;
+#resumen .img-duplicate:not(.enviado){
+	margin-top: -38px;
+}
+
+#resumen .img-duplicate img {
+	max-width: 30px;
 }
 
 #resumen .pendiente {

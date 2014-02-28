@@ -12,7 +12,7 @@
 			),
 		),
 
-		'server' => $_SERVER[ 'HTTP_HOST'].'/GearProjects/Honolulu',
+		'server' => '/honolulu/',
 	);
 
 	//****************************************************************

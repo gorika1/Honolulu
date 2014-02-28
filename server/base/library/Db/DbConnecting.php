@@ -5,10 +5,10 @@
 	
 	class Connecting
 	{	
-		static $host = 'localhost'/*'sql102.byethost13.com'*/;
-		static $user = 'root'/*'b13_13268400'*/;
-		static $password = '';
-		static $db = 'honolulu-db'/*'b13_13268400_honolulu'*/;
+		static $host = 'sql102.byethost13.com';
+		static $user = 'b13_13268400';
+		static $password = 'talitax';
+		static $db = 'b13_13268400_honolulu';
 			
 		static function startConnection()
 		{

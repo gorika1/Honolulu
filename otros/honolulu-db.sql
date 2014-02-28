@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-02-2014 a las 01:32:18
+-- Tiempo de generación: 28-02-2014 a las 21:51:27
 -- Versión del servidor: 5.6.12
 -- Versión de PHP: 5.5.1
 
@@ -189,14 +189,6 @@ CREATE TABLE IF NOT EXISTS `Pedidos` (
   PRIMARY KEY (`nroMesa`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `Pedidos`
---
-
-INSERT INTO `Pedidos` (`nroMesa`, `monto`) VALUES
-(1, 125000),
-(2, 35000);
-
 -- --------------------------------------------------------
 
 --
@@ -207,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `PedidosBebidas` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Bebidas_idBebida` int(11) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
-  `entregado` int(11) DEFAULT NULL,
+  `entregado` int(11) DEFAULT '0',
   `fecha` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Bebidas_idBebida`),
@@ -225,24 +217,13 @@ CREATE TABLE IF NOT EXISTS `PedidosMenus` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Menus_idMenu` int(11) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
-  `entregado` int(11) DEFAULT NULL,
+  `entregado` int(11) DEFAULT '0',
   `fecha` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
   PRIMARY KEY (`Pedidos_nroMesa`,`Menus_idMenu`),
   KEY `fk_Pedidos_has_Menus_Menus1_idx` (`Menus_idMenu`),
   KEY `fk_Pedidos_has_Menus_Pedidos_idx` (`Pedidos_nroMesa`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `PedidosMenus`
---
-
-INSERT INTO `PedidosMenus` (`Pedidos_nroMesa`, `Menus_idMenu`, `cantidad`, `entregado`, `fecha`, `hora`) VALUES
-(1, 1, 2, NULL, '2014-02-07', '14:16:03'),
-(1, 3, 2, NULL, '2014-02-07', '14:16:03'),
-(2, 1, 1, NULL, '2014-02-07', '18:23:13'),
-(1, 4, 1, NULL, '2014-02-07', '18:23:37'),
-(2, 3, 1, NULL, '2014-02-07', '18:24:10');
 
 -- --------------------------------------------------------
 
@@ -254,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `PedidosPizzas` (
   `Pedidos_nroMesa` int(11) NOT NULL,
   `Pizzas_idPizza` int(11) NOT NULL,
   `cantidad` int(11) DEFAULT NULL,
-  `entregado` int(11) DEFAULT NULL,
+  `entregado` int(11) DEFAULT '0',
   `idCombinado` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
@@ -262,14 +243,6 @@ CREATE TABLE IF NOT EXISTS `PedidosPizzas` (
   KEY `fk_Pedidos_has_Pizzas_Pizzas1_idx` (`Pizzas_idPizza`),
   KEY `fk_Pedidos_has_Pizzas_Pedidos1_idx` (`Pedidos_nroMesa`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `PedidosPizzas`
---
-
-INSERT INTO `PedidosPizzas` (`Pedidos_nroMesa`, `Pizzas_idPizza`, `cantidad`, `entregado`, `idCombinado`, `fecha`, `hora`) VALUES
-(1, 1, 1, NULL, NULL, '2014-02-07', '18:23:06'),
-(1, 2, 1, NULL, NULL, '2014-02-07', '18:23:06');
 
 -- --------------------------------------------------------
 

@@ -8,7 +8,7 @@ function getLista( idTipoMenu )
 		},
 		complete: function() {
 			$.unblockUI();
-			cantidad();
+			//cantidad();
 		},
 		cache: true,
 		url: '',
@@ -93,7 +93,7 @@ function scrollFoods(){
 
 
 //Controla los eventos del input para la cantidad
-function cantidad() {
+/*function cantidad() {
 	$(".amount").TouchSpin({
 	    min: 1,
 	});
@@ -130,7 +130,7 @@ function cantidad() {
 	        }
 	    }    
 	});
-}
+}*/
 
 //*****************************************************************************
 function resetDOM()
@@ -146,18 +146,10 @@ function resetDOM()
 			'</div>' +
 		'</div>' +
 		'<div class="price-add row">' +
-			'<div class="col-md-3 price">' +
+			'<div class="col-md-8 food-price">' +
 				'<strong><span class="food-price">Precio: {Precio}</span></strong>' +
 			'</div>' +
-			'<div class="col-md-5 food-amount">' +
-				'<form class="form-horizontal" role="form">' +
-				    '<div class="form-group">' +
-				        '<label class="col-md-5 control-label">Cantidad:</label>' +
-				        '<input class="amount" type="text" value="1" class="col-md-3 form-control">' +
-				    '</div>' +
-				'</form>' +
-			'</div>' +
-			'<div class="col-md-4">' +
+			'<div class="col-md-3">' +
 				'<div class="glyphicon glyphicon-plus food-add" id-add="{idMenu}" type="{Type}" food="{Nombre}"></div>' +
 			'</div>' +
 		'</div>' +

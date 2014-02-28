@@ -1,78 +1,82 @@
 <?php
 
-	class Drawing extends MasterDrawing
+namespace Gear\Draw;
+
+use Gear\Draw\MasterDrawing;
+
+class Drawing extends MasterDrawing
+{
+	protected $server; // almacena la url absoluta en donde trabaja el programador		
+	protected $template; // template de la lista con el que trabaja el codigo cliente en un momento dado
+	protected $list; // lista de los words y su correspondiente traduccion
+
+	protected $principalList = array(); // Almacena los distintos fragmentos html de listados
+
+
+	public function __construct()
 	{
-		protected $server; // almacena la url absoluta en donde trabaja el programador		
-		protected $template; // template de la lista con el que trabaja el codigo cliente en un momento dado
-		protected $list; // lista de los words y su correspondiente traduccion
+		parent::__construct();
+		//Establece la raiz de trabajo del programador
+		global $server;
+		if( isset( $server ) )
+			$this->server = $server . 'server/';
+		else
+			$this->server = '/server/';
 
-		protected $principalList = array(); // Almacena los distintos fragmentos html de listados
+	}//end __construct
 
 
-		public function __construct()
+	//***********************************************************************************
+
+	//Obtiene el template de la lista pasada
+	protected function setList( $name )
+	{
+		//Establece el directorio de las listas de una vista			
+		$directory = 'client/html/app/' . lcfirst( $this->className ).'/list/';
+		// Obtiene el template a procesar
+		$this->template = file_get_contents( $directory . $name . 'List.html' );
+	}
+
+	//***********************************************************************************
+	//Crea la fraccion html correspondiente recibiendo como parametro el atributo (del codigo cliente) en donde se guardara el fragmento
+	protected function draw( $listName )
+	{
+		$this->principalList[ $listName ] = ''; // Crea el indice en el arreglo
+
+		//Si no hay indices en $this->list no hay nada que traducir
+		if( isset( $this->list ) )
+			// Crea el fragmento HTML
+			$this->drawer->convertListToString( $this->list, $this->template, $this->principalList[ $listName ] );		
+
+		// Borra los valores de $this->list para recibir un nuevo conjunto de words a traducir
+		unset( $this->list );
+	}//end translate
+
+	//************************************************************************************
+
+	public function drawPage( $title, $replaced = null, $extras = null )
+	{
+		//Clona los datos del objeto drawer
+		global $drawer;
+		$this->drawer = clone( $drawer );
+		
+		//Si se ha pasado la lista que reemplazar
+		if( isset( $replaced ) )
 		{
-			parent::__construct();
-			//Establece la raiz de trabajo del programador
-			global $server;
-			if( isset( $server ) )
-				$this->server = $server . '/server/';
-			else
-				$this->server = 'http://localhost/server/';
+			foreach ( $replaced as $function )
+				eval( '$this->draw' . $function . ';' );
+		}//end if
 
-		}//end __construct
-
-
-		//***********************************************************************************
-
-
-		public function setList( $name )
+		//Si se pasaron elementos extras que traducir
+		if( isset( $extras) )
 		{
-			//Establece el directorio de las listas de una vista			
-			$directory = 'client/html/app/' . lcfirst( $this->className ).'/list/';
-			// Obtiene el template a procesar
-			$this->template = file_get_contents( $directory . $name . 'List.html' );
-		}
-
-		//***********************************************************************************
-		//Crea la fraccion html correspondiente recibiendo como parametro el atributo (del codigo cliente) en donde se guardara el fragmento
-		public function draw( $listName )
-		{
-			$this->principalList[ $listName ] = ''; // Crea el indice en el arreglo
-
-			//Si no hay indices en $this->list no hay nada que traducir
-			if( isset( $this->list ) )
-				// Crea el fragmento HTML
-				$this->drawer->convertListToString( $this->list, $this->template, $this->principalList[ $listName ] );		
-
-			// Borra los valores de $this->list para recibir un nuevo conjunto de words a traducir
-			unset( $this->list );
-		}//end translate
-
-		//************************************************************************************
-
-		public function drawPage( $title, $replaced = null, $extras = null )
-		{
-			//Clona los datos del objeto drawer
-			global $drawer;
-			$this->drawer = clone( $drawer );
-			
-			//Si se ha pasado la lista que reemplazar
-			if( isset( $replaced ) )
-			{
-				foreach ( $replaced as $function )
-					eval( '$this->draw' . $function . ';' );
-			}//end if
-
-			//Si se pasaron elementos extras que traducir
-			if( isset( $extras) )
-			{
-				foreach ( $extras as $key => $value ) {
-					$this->principalList[ $key ] = $value;
-				}
+			foreach ( $extras as $key => $value ) {
+				$this->principalList[ $key ] = $value;
 			}
-			
-			$this->principalList[ 'Title' ] = $title;
-			$this->drawer->draw( $this->principalList );
-		}//end translatePage
+		}
+		
+		$this->principalList[ 'Title' ] = $title;
+		$this->drawer->draw( $this->principalList );
+	}//end translatePage
 
-	}//end View
+}//end Drawer

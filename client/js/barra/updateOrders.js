@@ -42,6 +42,8 @@ function getOrders( load )
 				currentOrders = data;
 			}				
 			else // Si fue una comprobacion de si existe nuevos pedidos
+			{
+				console.log( data.length );
 				if( data.length != 0 ) // Si existe nuevos pedidos
 				{
 					if( $('#pedidos').text() == 'No hay pedidos pendientes' )
@@ -52,6 +54,7 @@ function getOrders( load )
 					compareOrders( data );
 					updateDOM();
 				}
+			}				
 
 			if( currentOrders === null )
 			{
