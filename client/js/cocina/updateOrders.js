@@ -26,7 +26,7 @@ function getOrders( load )
 {
 	load || ( load = false );
 	$.ajax({
-		url: '/GearProjects/Honolulu/cocina',
+		url: '',
 		dataType: 'json',
 		data: {'ajax':'true','update':'Pedidos', 'load':load },
 		contentType: 'application/x-www-form-urlencoded',
@@ -58,7 +58,6 @@ function getOrders( load )
 		ifModified: false,
 		processData: true,
 		type: 'POST',
-		timeout: 3000,
 	});
 }
 

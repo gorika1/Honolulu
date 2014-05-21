@@ -1,10 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>{Title}</title>
-</head>
-<body>
-	
-</body>
+<html>
+    <head>
+        <title>{Title}</title>
+
+        <!-- Required stylesheet -->
+        <link rel="stylesheet"l href="client/js/plugins/deck/core/deck.core.css">
+
+        <!-- Style theme. More available in /themes/style/ or create your own. -->
+        <link rel="stylesheet" media="screen" lhref="client/js/plugins/deck/themes/style/web-2.0.css">
+
+        <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+        <link rel="stylesheet" media="screen" lhref="client/js/plugins/deck/themes/transition/horizontal-slide.css">
+
+        <!-- Required Modernizr file -->
+        <script lsrc="client/js/plugins/deck/modernizr.custom.js"></script>
+
+        {HEAD}
+    </head>
+    <body>
+
+        {BAR}
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="btn-group btn-group-lg" id="buttons">
+                        <button type="button" class="btn btn-default" id="info-general" slide="0">Pedidos</button>
+                        <button type="button" class="btn btn-default" id="info-cocina" slide="1">Cocina</button>
+                        <button type="button" class="btn btn-default" id="info-barra" slide="2">Barra</button>
+                        <button type="button" class="btn btn-default" id="admin-food" slide="3">Menus y Bebidas</button>
+                    </div>
+                </div>              
+            </div>         
+        </div>
+
+            <div class="deck-container">    
+                <!-- Begin slides. Justn make elements with a class of slide. -->
+                
+                <section id="general-info" class="slide">
+                    <h2 class="text-center">Bienvenido Usuario</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-4">
+                            <span class="general-information">
+                                Hay <span>{Amount Mesas}</span>
+                            </span>
+                            <br />
+                            <span class="general-information">
+                                Hay <span>{Amount Cocina}</span> en la cocina
+                            </span>
+                            <br />
+                            <span class="general-information">
+                                Hay <span>{Amount Barra}</span> en la barra
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                
+                <section id="cocina-orders" class="slide">
+                    <div class="container">
+                        
+                    </div>
+                </section>
+                <section id="barra-orders" class="slide">
+                    <div class="container">
+                    </div>
+                </section>                
+
+                <!-- End slides. -->
+            </div>
+
+        <!-- Required JS files. -->
+        <script lsrc="client/js/plugins/deck/core/deck.core.js"></script>
+
+
+        <!-- Initialize the deck. You can put this in an external file if desired. -->
+        <script>
+            $(function() {
+                $.deck('.slide');
+            });
+        </script>
+        <script type="text/javascript" lsrc="client/js/admin/global-vars.js"></script>
+        <script type="text/javascript" lsrc="client/js/admin/update-cocina.js"></script>
+        <script type="text/javascript" lsrc="client/js/admin/update-barra.js"></script>
+        <script type="text/javascript" lsrc="client/js/admin/show-info.js"></script>
+        <script type="text/javascript" lsrc="client/js/admin/events.js"></script>
+
+    </body>
 </html>

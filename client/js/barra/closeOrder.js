@@ -10,7 +10,7 @@ function closeOrderInDB( forElement, mesa, amount )
 
 	$.ajax({
 
-		url: '/GearProjects/Honolulu/barra',
+		url: '',
 		data: {'ajax':'true','delete':'true', 'data':data },
 		contentType: 'application/x-www-form-urlencoded',
 		error: function() {

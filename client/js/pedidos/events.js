@@ -11,7 +11,7 @@ $(document).on( 'ready', function(){
 	$('.bg-rect').on( 'click', function(){
 		id = $(this).attr('option-value');
 		$( '.active' ).removeClass('active');//borra la clase active del elemento anterior
-		$(':first-child', this ).addClass( 'active' );//asigna la clase al elemento actual
+		$('.indicator[option-value="' +  id + '"]').addClass( 'active' );//asigna la clase al elemento actual
 		getLista( id );//llama a la funcion getLista y pasa el id del tipo del menu
 	});
 
@@ -39,7 +39,9 @@ $(document).on( 'ready', function(){
 
 	//Controla la presion del boton para duplicar un pedido
 	$( '#resumen' ).on( 'click', '.img-duplicate img', function() {
-		var container = $(this).parent().parent();
+		var container = $(this).parent().parent(); // si es de un pedido ya enviado
+		if( container.attr('for') === undefined ) // si no existe attr for quiere decir que es duplicado de un pedido aun no enviado
+			container = $(this).parent().parent().parent().parent();
 		duplicateOrder( container );
 	});
 
@@ -76,6 +78,12 @@ $(document).on( 'ready', function(){
 			if( answer == "true" )
 			{
 				removeOrder( elementFor, extraAttr );
+				if( $( '#resumen' ).height() > $( '.mCSB_container' ).height() )
+				{
+					$('#resumen').mCustomScrollbar("destroy");
+					scrollResumen();
+				}
+
 			}	
 		}
 		else if( action == 'send' )
@@ -83,7 +91,7 @@ $(document).on( 'ready', function(){
 			$('#confirm-send').bPopup().close();
 			if( answer == 'true' ) 
 			{
-				var mesa = $('#popup').text();
+				var mesa = $('#popup1').text();
 				saveCart( mesa );				
 			}
 		}		
@@ -94,7 +102,7 @@ $(document).on( 'ready', function(){
 	//********************************** POPUP SELECT TABLE ***************************************
 
 	//Controla el popup para la eleccion de la mesa
-	$('#popup').on( 'click', function(){
+	$('.btn#popup1').on( 'click', function(){
 		$('#myModal').reveal({
 		     animation: 'fade',                   //fade, fadeAndPop, none
 		     animationspeed: 150,                       //how fast animtions are
@@ -111,16 +119,8 @@ $(document).on( 'ready', function(){
 	$('.exception').on('click', function() {
 		var mesa = $(this).attr('id');
 		mesa = mesa.replace( '-', ' ' );
-		//Borra todos los pedidos para luego cargar los pedidos de la mesa respectiva
-		content = document.getElementById( 'resumen' );
-		while( content.hasChildNodes() )
-			content.removeChild( content.firstChild );
 
 		changeMesa(mesa);//pasa la mesa que se eligio para que se determine si se cambio
 	});
-
-
-	//*********************** CANTIDAD DE UN MISMO PEDIDO ********************************
-	//cantidad();
 	
 });

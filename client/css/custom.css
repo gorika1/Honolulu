@@ -1,5 +1,5 @@
 body {
-	background: #FFE;
+	background: #EEE;
 	padding-bottom: 0;
 }
 
@@ -15,19 +15,26 @@ body {
 /************************************************
 *******************  NAVBAR  ********************
 *************************************************/
-div.navbar-inverse {
-	background: #3f3f3f;
+.navbar-metro-white {
+	border-bottom: 4px solid #000;
+	box-shadow: 0 7px 5px rgba( 0,0,0,.5);
 }
 
-#logo {
-	display: inline;
-	height: 60px;
+#gear-logo {
+	height: 50px;
+	padding-top: 0px;
 }
 
 .navbar-brand {
-	display: inline;
+	display: inline-block;
 	float: none;
-	padding-left: 3px;
+	padding: 15px 15px 15px 3px;
+	vertical-align: top;
+}
+
+.navbar-brand:hover {
+	color: #000 !important;
+	background: transparent !important;
 }
 
 /************************************************
@@ -35,19 +42,35 @@ div.navbar-inverse {
 *************************************************/
 
 #options {
-	margin-left: 0;
+	margin-left: -30px;
 	padding-right: 0;
 	width: 10%;
 }
 
+.indicator {
+	background: #428bca;
+	display: none;
+	height: 82px;
+	margin-left: -4px;
+	margin-top: .4em;
+	width: 20px;
+}
 
 div.bg-rect {
-	background: #212121;
-	margin: .3em;
-	height: 80px;
-	max-width: 80px;
+	background: #FFF;
+	border: 2px solid #DDD;
+	cursor: pointer;
+	margin-left: .5em;
+	margin-top: .3em;
+	height: 85px;
+	width: 85px;
 	padding-top: 10px;
 	text-align: center;
+}
+
+div.bg-rect, .indicator.active {
+	display: inline-block;
+	vertical-align: top;
 }
 
 div.bg-rect > div {
@@ -59,10 +82,6 @@ div.bg-rect > div {
 	width: 50px;
 }
 
-div.bg-rect > div.active {
-	box-shadow: 0 0 20px #888;
-}
-
 #options div img {
 	display: block;
 	width: 30px;
@@ -71,7 +90,7 @@ div.bg-rect > div.active {
 }
 
 .option-name {
-	color: #CCC;
+	color: #000;
 	display: block;
 	font-size: 14px;
 	font-weight: bold;
@@ -95,20 +114,24 @@ div.bg-rect > div.active {
 	width: 100%;
 }
 
-#food-container {
-	border: 1px solid #d25d37;
+.food-container {
+	border: 1px solid #AAA;
+	box-shadow: 5px 5px 10px rgba( 0,0,0,.5);
+	width: 98%;
 }
 
-#food-container .panel-heading {
-	background: #d25d37;
-	border-bottom: 1px solid #d25d37;
-}
-
-#food-container .panel-title {
+.food-container .panel-heading {
+	color: #FFF;
+	border-bottom: 2px solid #AAA;
 	font-weight: bold;
 }
 
-#food-container:first {
+.food-container .panel-title {
+	font-weight: bold !important;
+}
+
+
+.food-container:first {
 	margin-top: 0;
 }
 
@@ -156,24 +179,36 @@ div.bg-rect > div.active {
 /************************************************
 ******************* Carrito  ********************
 *************************************************/
+.col-xs-3.resumen-container {
+	margin-top: 5px;
+	width: 33%;
+}
+
 #resumen-container {
-	border: 1px solid #d25d37;	
-	height: 400px;
+	border: 2px solid #AAA;	
+	height: 450px;
+	margin-right: -55px;
 	padding: 0;
 }
 
 #resumen-container .panel-heading {
-	background: #d25d37;
-	border-bottom: 1px solid #d25d37;
+	border-bottom: 2px solid #AAA;
+}
+
+#resumen-container .panel-title .btn {
+	font-size: 16px;
+	font-family: 'Roboto Light';
+	font-weight: bold;
+	height: 40px;
 }
 
 #resumen-container .panel-body {
-	height: 90%;
+	height: 93%;
 }
 
 #resumen-container .panel-footer {
 	background: #FFF;
-	border: 1px solid #d25d37;
+	border: 2px solid #AAA;
 	height: 31px;
 	padding: 2px 15px;
 }
@@ -185,75 +220,57 @@ div.bg-rect > div.active {
 
 #resumen {
 	color: #212121;
-	font-size: 12px;
+	font-size: 16px;
 	font-weight: bold;
 	height: 80%;
 }
 
-#resumen .food-order-container {
-	border: 1px solid #CCC;
-	border-radius: 10px;
-	margin-top: 4px;
-	padding-bottom: 4px;
-}
-
-#resumen .food-order-amount {
-	display: inline-block;
-	padding: 3px .5em 0  3px;
-	width: 8%;
-}
-
 #resumen .food-order {
-	display: inline-block;
-	padding-top: 3px;
-	vertical-align: top;
-	width: 70%;
+	padding-bottom: 8px;
+	text-align: center;	
 }
-
 
 #resumen .food-order-price {
 	display: inline-block;
-	padding-top: 3px;
-	text-align: right;
-	width: 20%;
-}
-
-#resumen .food-order-option-container {
-	font-size: 28px;
-	margin-top: -2px;
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 8px;
+	text-align: center;
 	width: 100%;
 }
 
-#resumen .food-order-option.edit,
-#resumen .food-order-option.plus {
-	color: #000;
-	padding-left: 25px;
+#resumen .food-order-container {
+	outline: 1px solid #DDD;
+	height: auto;
+	margin-left: 5px;
+	margin-top: 5px;
+	width: 97%;
 }
 
-#resumen .food-order-option.plus span {
-	display: block !important;
-	background: #212121;
-	color: #FFF;
-	display: inline-block;
-	font-size: 20px;
-	margin-top: 2px;
-	padding: .2em;
-	width: 26px;
+#resumen .food-order-option {
+	font-size: 28px;
+}
+
+#resumen .food-order-option.edit {
+	color: #000;
+	margin-top: 5px;
+	padding-left: 25px;
 }
 
 #resumen .food-order-option.remove {
 	color: #000;
+	margin-top: 5px;
 	padding-right: 25px;
 	text-align: right;
 }
 
-#resumen .img-duplicate {
+#resumen .img-duplicate.enviado {
 	display: block;
 	text-align: center;
 }
 
 #resumen .img-duplicate:not(.enviado){
-	margin-top: -38px;
+	text-align: center;
 }
 
 #resumen .img-duplicate img {
@@ -268,15 +285,28 @@ div.bg-rect > div.active {
 	color: #163A18;
 }
 
+div#notification {
+	color: #7A2920;
+	display: inline-block;
+	font-size: 12px;
+	vertical-align: top;
+	width: 75%;
+}
+
+div#notification label {
+	padding-top: 34px;
+}
+
 #enviar {
-	display: block;
+	display: inline-block;
 	text-align: right;
-	width: 95%;
+	vertical-align: top;
+	width: 20%;
 }
 
 #enviar img {
-	max-height: 60px;
-	max-width: 60px;
+	max-height: 50px;
+	max-width: 50px;
 }
 
 #monto-total > span {
@@ -297,8 +327,18 @@ div.bg-rect > div.active {
 	width: 25%;
 }
 
+@media( max-width: 1300px) {
+	#options {
+		width: 14%;
+	}
+
+	.col-xs-3.resumen-container {
+		width: 30%;
+	}
+}
+
 /***************************************************
-******************** POPUP MESA*********************
+******************** POPUP MESA *********************
 ****************************************************/
 #popup {
 	background: #eee;
@@ -359,10 +399,17 @@ div.bg-rect > div.active {
 
 
 /*****************************************************************************************************
-******************************************* COCINA ***************************************************
+************************************* BARRA Y COCINA *************************************************
 ******************************************************************************************************/
 .container.cocina {
 	margin-top: 2em;
+}
+
+#pedidos .panel-primary {
+	border-color: #AAA;
+	border-radius: 0;
+	box-shadow: 10px 10px 10px rgba( 0,0,0,.5 );
+	outline: 1px solid #AAA;
 }
 
 #pedidos.message {
@@ -378,25 +425,28 @@ div.bg-rect > div.active {
 	text-align: center;
 }
 
-#pedidos .panel {
-	border: 1px solid #d25d37;
-}
 
 #pedidos .panel-heading {
-	background: #d25d37;
-	border-bottom: 1px solid #d25d37;
+	border-bottom: 1px solid #AAA;
+	border-radius: 0;
 	position: relative;
 }
 
 #pedidos .close-order {
 	font-size: 28px;
 	position: absolute;	
-	right: 0;
-	top: 0;
+	right: 2px;
+	top: 2px;
 }
 
 #pedidos .panel-body {
+	border: 1px solid #AAA;
 	font-size: 16px;
+}
+
+#pedidos .panel-footer {
+	border: 1px solid #AAA;
+	border-radius: 0;
 }
 
 .food-amount-cocina {
@@ -404,4 +454,30 @@ div.bg-rect > div.active {
 	display: block;
 	font-size: 22px;
 	margin-bottom: .5em;
+}
+
+/****************************************************************************************
+************************** ADMIN INFORMACION GENERAL ************************************
+*****************************************************************************************/
+div.general-information-container {
+	max-width: 90%;
+	margin: auto;
+	text-align: center;
+}
+
+span.general-information {
+	display: inline-block;
+	font-size: 20px;
+	margin: 40px auto 0;
+	text-align: left;
+}
+
+.stand-out-button {
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-group {
+	margin-bottom: 1em;
 }

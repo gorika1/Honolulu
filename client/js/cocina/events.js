@@ -35,7 +35,7 @@ $(document).on('ready', function(){
 	});
 
 
-	setInterval( 'getOrders()', 5000 );
+	setInterval( 'getOrders()', 10000 );
 
 
 });

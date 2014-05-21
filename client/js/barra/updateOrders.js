@@ -29,7 +29,7 @@ function getOrders( load )
 {
 	load || ( load = false );
 	$.ajax({
-		url: '/GearProjects/Honolulu/barra',
+		url: '',
 		dataType: 'json',
 		data: {'ajax':'true','update':'Pedidos', 'load':load },
 		contentType: 'application/x-www-form-urlencoded',
@@ -43,7 +43,6 @@ function getOrders( load )
 			}				
 			else // Si fue una comprobacion de si existe nuevos pedidos
 			{
-				console.log( data.length );
 				if( data.length != 0 ) // Si existe nuevos pedidos
 				{
 					if( $('#pedidos').text() == 'No hay pedidos pendientes' )
@@ -64,7 +63,6 @@ function getOrders( load )
 		ifModified: false,
 		processData: true,
 		type: 'POST',
-		timeout: 3000,
 	});
 }
 

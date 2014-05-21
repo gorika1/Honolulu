@@ -1,5 +1,3 @@
-var dom;
-
 function getLista( idTipoMenu )
 {
 	$.ajax({
@@ -42,7 +40,7 @@ function feedback() {
 	        '-webkit-border-radius': '10px', 
 	        '-moz-border-radius': '10px', 
 	        opacity: .5, 
-	        color: '#fff' 
+	        color: '#fff'
    	 	},
    	 	message:  '<h3>Cargando...</h3>',
     }); 
@@ -135,7 +133,7 @@ function scrollFoods(){
 //*****************************************************************************
 function resetDOM()
 {
-	dom = '<div class="panel panel-primary" id="food-container">' +
+	dom = '<div class="panel panel-primary food-container">' +
 		'<div class="panel-heading">' +
 			'<h3 class="panel-title">{Nombre}</h3>' +
 		'</div>' +

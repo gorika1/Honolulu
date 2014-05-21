@@ -11,20 +11,19 @@ class PedidosController extends ControllerAJAX
 	public function __construct( $idTipoMenu = null )
 	{
 		//Si la peticion se hace por AJAX (la actualizacion de la lista)
-		if( parent::evaluateUpdate( 'POST' ) )
+		if( isset( $_POST[ 'update' ] ) )
 		{
 			$page = new PedidosDrawing();
-			parent::callDraw( $page, array( $idTipoMenu, true ) );
+			$this->callDraw( $page, 'Lista', array( $idTipoMenu, true ) );
 		} 
-		else if( parent::evaluateAdd( 'POST' ) )//Si se desea hacer un ingreso de datos			
+		else if( isset( $_POST[ 'add' ] ) )//Si se desea hacer un ingreso de pedidos		
 		{
 			$obj = new Pedidos();
 			//Guarda los pedidos de la mesa
 			$obj->setPedido( $_POST );
-			//Create file to indicate that added new orders
 		}
 		//Si se quiere obtener los pedidos ya hechos por una mesa
-		else if( parent::evaluateGet( 'POST' ) )
+		else if( isset( $_POST[ 'get' ] ) )
 		{
 			$obj = new Pedidos();
 			//Obtiene los pedidos de la mesa
@@ -44,7 +43,7 @@ class PedidosController extends ControllerAJAX
 
 if( isset( $_POST[ 'ajax' ] ) )
 {
-	if( isset( $_POST[ 'idTipoMenu' ] ) )//Si la peticion se hizo por AJAX y se quiere obtener los menus
+	if( isset( $_POST[ 'idTipoMenu' ] ) ) //Si la peticion se hizo por AJAX y se quiere obtener los menus
 		$obj = new PedidosController( $_POST[ 'idTipoMenu' ] );
 	else
 		$obj = new PedidosController();

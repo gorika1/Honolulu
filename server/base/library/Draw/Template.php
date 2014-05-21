@@ -1,4 +1,5 @@
 <?php
+
 namespace Gear\Draw;
 
 class Template 

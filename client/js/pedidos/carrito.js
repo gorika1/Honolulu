@@ -62,7 +62,6 @@ function saveCart(mesa)
 	
 	//Obtiene el id de la mesa seleccionada
 	idMesa = mesa.replace( 'Mesa ', '' );
-	console.log( idMesa);
 
 	$.ajax({
 
@@ -73,8 +72,14 @@ function saveCart(mesa)
 			alert( 'Ha ocurrido un error' );
 		},
 		success:function(data){
-			$('#resumen .food-order, #resumen .food-order-price, #resumen .food-order-amount' ).removeClass('pendiente');
+			$('#resumen .food-order, #resumen .food-order-amount' ).removeClass('pendiente');
 			$('.food-order-option-container').remove();
+			$('.food-order:not(.enviado)').after(
+				'<div class="img-duplicate">' +
+					'<img src="client/images/icons/add12.png" /> ' +
+				'</div>'
+			);
+			$('#resumen .food-order').addClass('enviado');
 			$('.img-duplicate').addClass('enviado');
 			oPedidos = {};
 		},
@@ -108,11 +113,16 @@ function getCart()
 
 function changeMesa(mesa)
 {
-	mesaActual = $('#popup').text();
+	mesaActual = $('.btn#popup1').text();
 	//Si se cambio la mesa
 	if( mesaActual != mesa )
 	{
-		$('#popup').text(mesa);
+		//Borra todos los pedidos para luego cargar los pedidos de la mesa respectiva
+		content = document.getElementById( 'resumen' );
+		while( content.hasChildNodes() )
+			content.removeChild( content.firstChild );
+
+		$('#popup1').text(mesa);
 		var idMesa = mesa.replace( 'Mesa ', '' );
 		total = 0;
 		getPedidos(idMesa);
@@ -129,18 +139,17 @@ function duplicateOrder( container )
 	var type = forElement.substr( forElement.length - 1, 1 );
 	var id = forElement.substring( 0, forElement.length - 1 );
 
-	var food = $( container ).children('.food-order').text();
-	var amount = $(container).children('.food-order-amount').text();
+	var food = $( container ).children('.food-order');
+	food = food.text().replace( food.attr('amount'), '' ).trim();
+	var amount = $(container).children('.food-order').attr('amount');
 	var price = $( container ).children('.food-order-price').text() / amount;
 	
 	
-	writePedido( id,food, price, 1, type );
+	writePedido( id, food, price, 1, type );
 	assignAttrExtra( id, type );
 
 	total = total + parseInt( price );
 	writeMontoTotal( total );
-
-	scrollResumen();
 }
 
 //*************************************************************************
@@ -168,32 +177,44 @@ function writePedido( id, food, precio, cantidad, type, got )
 	if( got ) 
 	{
 		$('#resumen').append(
-			'<div class="food-order-container enviado" for="' + id + type + '">' +
-				'<span class="food-order-amount enviado" >' + cantidad + '</span>' +
-				'<span class="food-order enviado" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food +
-				'</span>' +
-				'<span class="food-order-price enviado">' + precio + '</span>' +
+			'<div class="food-order-container metro-tile double vertical-half enviado" for="' + id + type + '">' +
+				'<div class="food-order enviado" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '" >' + 
+				cantidad + '&nbsp;&nbsp;&nbsp' + food + '</div>' +
 			'</div>'
 		);
 
 		writeAdd( id, type, true );
 
+		$('.food-order-container[for="' + id + type + '"]:last').append(
+			'<span class="food-order-price pendiente">' + precio + '</span>'
+		);
+
 		return false;
 	}
 	else 
-	{		
-		$('#resumen').append(
-			'<div class="food-order-container" for="' + id + type + '">' +
-				'<span class="food-order-amount pendiente" >' + cantidad + '</span>' +
-				'<span class="food-order pendiente" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '">' + food + 
-				'</span>' +
-				'<span class="food-order-price pendiente">' + precio + '</span>' +
+	{
+		var container; // contenedor en donde se hara el append
+
+		//Si existe el scrolling
+		if ( $('.mCSB_container:not(.mCS_no_scrollbar)').length == 1 )
+			container = '#resumen .mCSB_container:not(.mCS_no_scrollbar)';
+		else
+			container = '#resumen .mCSB_container.mCS_no_scrollbar';
+
+		$(container).append(
+			'<div class="food-order-container metro-tile double vertical-half" for="' + id + type + '">' +
+				'<div class="food-order pendiente" id-add="' + id + '" type="' + type + '" amount="' + cantidad + '" >' + 
+				cantidad + '&nbsp;&nbsp;&nbsp' + food + '</div>' +
 			'</div>'
 		);
 
 		writeOptions( id, type );
 
-		writeAdd( id, type );
+		$('.food-order-container[for="' + id + type + '"]:last').append(
+			'<span class="food-order-price pendiente">' + precio + '</span>'
+		);
+
+		$("#resumen").mCustomScrollbar("update"); // actualiza el scroll dragger
 
 		return true; // retorna pedido para que el if en addCart pueda escribir el monto total
 	}//end if...else externo
@@ -208,24 +229,25 @@ function writeOptions( id, type )
 	$('.food-order-container[for="' + id + type + '"]:last').append(
 		'<div class="food-order-option-container" for="' + id + type + '">' +
 			'<div class="row">' +
-				'<div class="col-md-6 food-order-option edit">' +
+				'<div class="col-md-4 food-order-option edit">' +
 					'<span class=" glyphicon glyphicon-edit" for="' + id + type + '"></span>' +
 				'</div>' +
-				'<div class="col-md-6 food-order-option remove">' +
+				'<div class="col-md-4 img-duplicate">' +
+					'<img src="client/images/icons/add12.png" /> ' +
+				'</div>' +
+				'<div class="col-md-4 food-order-option remove">' +
 					'<span class="glyphicon glyphicon-remove" for="' + id + type + '"></span>' +
 				'</div>' +
-			'</div>'+
-		'</div>' +
-		'<span class="separator" for="' + id + type + '"></span>'
+			'</div>'
 	);	
 }
 
 
 function writeAdd( id, type, got )
 {
-	var c = got ? 'enviado' : ''
+	var c = got ? ' enviado' : ''
 	$('#resumen .food-order-container[for="' + id + type + '"]:last').append(
-		'<div class="img-duplicate ' + c + '">' +
+		'<div class="img-duplicate' + c + '">' +
 			'<img src="client/images/icons/add12.png" /> ' +
 		'</div>'
 	);

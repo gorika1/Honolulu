@@ -14,7 +14,7 @@ function removeOrderInDB( forElement, mesa, amount )
 
 	$.ajax({
 
-		url: '/GearProjects/Honolulu/cocina',
+		url: '',
 		data: {'ajax':'true','delete':'true', 'data':data },
 		contentType: 'application/x-www-form-urlencoded',
 		error: function() {

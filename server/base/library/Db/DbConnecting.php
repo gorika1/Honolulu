@@ -1,28 +1,36 @@
 <?php
-	//Creado por Valentin Sánchez
-	//21/07/2013
-	//22:03 Geany 1.22
-	
-	class Connecting
-	{	
-		static $host = 'sql102.byethost13.com';
-		static $user = 'b13_13268400';
-		static $password = 'talitax';
-		static $db = 'b13_13268400_honolulu';
-			
-		static function startConnection()
-		{
-			$connection = new mysqli( Connecting::$host, Connecting::$user, Connecting::$password, Connecting::$db );
-			
-			$connection->set_charset( 'utf8' );
-			
-			if( mysqli_connect_error() )
-				echo 'Error in the connection';
-			else
-				return $connection;
-				
-		}//end startConnection
+//Creado por Valentin Sánchez
+//21/07/2013
+
+namespace Gear\Db;
+
+class Connecting
+{	
+	static $host;
+	static $user;
+	static $password;
+	static $db;
 		
-	}//end Connecting
+	static function startConnection()
+	{
+		$connection = new \mysqli( self::$host, self::$user, self::$password, self::$db );
+		
+		$connection->set_charset( 'utf8' );
+		
+		if( mysqli_connect_error() )
+			echo 'Error in the connection';
+		else
+			return $connection;
+			
+	}//end startConnection
+
+
+	static function setConnectData( &$data )
+	{
+		self::$host = $data[ 'Host' ];
+		self::$user = $data[ 'User' ];
+		self::$password = $data[ 'Password' ];
+		self::$db = $data[ 'DB' ];
+	}
 	
-?>
+}//end Connecting

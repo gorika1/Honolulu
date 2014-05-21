@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{HEAD}
+		<!-- Required stylesheet -->
+	  <link rel="stylesheet" lhref="client/js/plugins/deck/core/deck.core.css" />
+
+	  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	  <link rel="stylesheet" media="screen" lhref="client/js/plugins/deck/themes/transition/horizontal-slide.css" />
+
+
+	  <!-- Required Modernizr file -->
+	  <script lsrc="client/js/plugins/deck/modernizr.custom.js"></script>
+	</head>
+	<body>
+		{BAR}
+		<br />
+		<div class="container">
+			<br><br><br>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="btn-group btn-group-lg" id="buttons">
+						<button type="button" class="btn btn-default" id="info-general" slide="0">Pedidos</button>
+						<button type="button" class="btn btn-default" id="info-cocina" slide="1">Cocina</button>
+						<button type="button" class="btn btn-default" id="info-barra" slide="2">Barra</button>
+						<button type="button" class="btn btn-default" id="admin-food" slide="3">Menus y Bebidas</button>
+					</div>
+				</div>				
+			</div>
+			<div class="content deck-container">
+				<section class="slide">
+					<h2 class="text-center">Bienvenido Usuario</h2>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-4">
+							<span class="general-information">
+								Hay <span>{Amount Mesas}</span>
+							</span>
+							<br />
+							<span class="general-information">
+								Hay <span>{Amount Cocina}</span> en la cocina
+							</span>
+							<br />
+							<span class="general-information">
+								Hay <span>{Amount Barra}</span> en la barra
+							</span>
+						</div>
+					</div>
+				</section>
+
+				<section class="slide">
+					<h1>Hola</h1>
+				</section>
+
+				<section class="slide">
+					<h1>Hola</h1>
+				</section>
+			</div>-->
+		</div>
+		<script lsrc="client/js/plugins/deck/core/deck.core.js"></script>
+		<script type="text/javascript">
+			$.deck('.slide');
+		</script>
+		<script type="text/javascript" lsrc="client/js/admin/global-vars.js"></script>
+		<script type="text/javascript" lsrc="client/js/admin/update-cocina.js"></script>
+		<script type="text/javascript" lsrc="client/js/admin/update-barra.js"></script>
+		<script type="text/javascript" lsrc="client/js/admin/show-info.js"></script>
+		<script type="text/javascript" lsrc="client/js/admin/events.js"></script>
+
+	</body>
+</html>
